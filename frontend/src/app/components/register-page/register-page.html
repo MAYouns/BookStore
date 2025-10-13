@@ -1,1 +1,41 @@
-<p>register-page works!</p>
+<div class="h-dvh bg-black text-white flex text-center select-none">
+    <div class="lg:block hidden w-5/12">
+        <img src="images/loginRegister.png" alt="boy read books" class="h-full w-full" />
+    </div>
+    <div class="flex flex-col items-center justify-center space-y-5 ">
+        <div class=" w-10/12">
+            <h2 class="text-4xl py-4 primary-color bona-nova-bold">Welcome to Neth BookPoint!</h2>
+            <p>
+                Discover a seamless way to sell your books and unlock exclusive benefits. Enjoy a hassle-free
+                experience, save valuable time, and take advantage of our amazing offers.
+            </p>
+        </div>
+        <form action="" class="space-y-6 w-6/12">
+            <h4 class="text-3xl primary-color bona-nova-bold">Create new Account</h4>
+            <div class="space-y-2">
+                <div class="space-x-2 flex">
+                    <input type="text" placeholder="firstName"
+                        class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4">
+                    <input type="text" placeholder="lastName"
+                        class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4">
+                </div>
+                <input type="email" placeholder="Enter Email"
+                    class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4">
+                <input type="password" placeholder="Enter Password"
+                    class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4">
+            </div>
+            <p class="text-left">
+                Do you have an account?
+                <a routerLink="/login" class="ml-5 text-[#F29C0D] bona-nova-bold underline">Login</a>
+            </p>
+            <hr class="text-gray-400 mx-12">
+            <div class="flex justify-around text-[20px]">
+                <div class="flex items-center space-x-6">
+                    <img src="icons/google-icon.png" alt="">
+                    <a class="hover:underline cursor-pointer">Register with Google</a>
+                </div>
+                <button class="bg-primary-color px-5 rounded font-bold cursor-pointer">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
