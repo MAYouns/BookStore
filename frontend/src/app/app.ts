@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavBar } from './components/nav-bar/nav-bar';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,11 @@ import { NavBar } from './components/nav-bar/nav-bar';
 })
 export class App {
   protected readonly title = signal('frontend');
+  navbar = true;
+  constructor(private router: Router) {
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {
+      console.log(e.url);
+      this.navbar = e.url === '/login' || e.url === '/register' ? false : true;
+    });
+  }
 }
