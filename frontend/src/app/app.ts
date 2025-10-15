@@ -2,10 +2,11 @@ import { Component, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavBar } from './components/nav-bar/nav-bar';
 import { filter } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBar],
+  imports: [RouterOutlet, NavBar, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
