@@ -30,6 +30,10 @@ body {
 .bg-primary-color {
   background-color: var(--primary-color);
 }
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
 .bona-nova-regular {
   font-weight: 400;
   font-style: normal;
