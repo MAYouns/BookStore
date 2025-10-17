@@ -35,7 +35,7 @@ export class GoogleAuthService {
 
     this.ngZone.run(() => {
       console.log('User info:', decoded);
-      // send the data to server
+      // send the data
     });
   }
 }
