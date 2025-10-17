@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { GoogleAuthService } from '../../services/auth.service';
 import {
   FormControl,
   FormGroup,
@@ -15,7 +16,13 @@ import {
   styleUrl: './register-page.css',
 })
 export class RegisterPage {
-  type = 'password';
+  constructor(private googleAuth: GoogleAuthService) {}
+  ngAfterViewInit() {
+    this.googleAuth.initializeButton();
+  }
+
+  type: string = 'password';
+  data: object = {};
   myLogForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -23,6 +30,7 @@ export class RegisterPage {
       Validators.pattern(/^(?=[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/),
     ]),
   });
+
   get emailValid() {
     return this.myLogForm.controls.email;
   }
@@ -32,5 +40,18 @@ export class RegisterPage {
   showHidePassword() {
     if (this.type == 'password') this.type = 'text';
     else this.type = 'password';
+  }
+  addUser(
+    firstName: HTMLInputElement,
+    lastName: HTMLInputElement,
+    password: HTMLInputElement,
+    email: HTMLInputElement
+  ) {
+    this.data = {
+      name: firstName.value + ' ' + lastName.value,
+      em: email.value,
+      pw: password.value,
+    };
+    console.log(this.data);
   }
 }
