@@ -35,7 +35,6 @@ export class GoogleAuthService {
 
     this.ngZone.run(() => {
       console.log('User info:', decoded);
-      alert(`Welcome ${decoded.name} (${decoded.email})`);
       // send the data
     });
   }
