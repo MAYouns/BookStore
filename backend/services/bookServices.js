@@ -2,7 +2,7 @@ const booksRepo = require('../repositories/dbBookRepository');
 
 
 const createBook = async (body) => {
-        return await booksRepo.createBook(body);
+    return await booksRepo.createBook(body);
 }
 
 const getAllBooks = async () => {
@@ -26,13 +26,16 @@ const getBookById = async (id) => {
 }
 
 const updateBook = async (id, update) => {
-    return  await booksRepo.updateBook(id, update);
+    return await booksRepo.updateBook(id, update);
 }
 
 const deleteBook = async (id) => {
     return await booksRepo.deleteBook(id); // will return null if the document not found
 }
 
+const addReview = async (bookId, reviewData) => {
+    return await booksRepo.addReview(bookId, reviewData);
+}
 
 module.exports = {
     createBook,
@@ -42,5 +45,6 @@ module.exports = {
     filterAndSort,
     getBookById,
     updateBook,
-    deleteBook
+    deleteBook,
+    addReview
 }

@@ -34,6 +34,15 @@ const deleteBook = async (id) => {
     return await BooksModel.findByIdAndDelete(id); // will return null if the document not found
 }
 
+const addReview = async (bookId, reviewData) => {
+    const book = await BooksModel.findById(bookId);
+    if (!book) throw new Error('Book not found');
+
+    book.reviews.push(reviewData);
+    await book.save();
+    return book;
+}
+
 
 module.exports = {
     createBook,
@@ -43,5 +52,6 @@ module.exports = {
     filterAndSort,
     getBookById,
     updateBook,
-    deleteBook
+    deleteBook,
+    addReview
 }
