@@ -6,7 +6,6 @@ import { initFlowbite } from 'flowbite';
   selector: 'app-nav-bar',
   imports: [RouterModule],
   templateUrl: './nav-bar.html',
-  styleUrl: './nav-bar.css',
 })
 export class NavBar {
   list = ['Home', 'Shop', 'About', 'Cart'];
