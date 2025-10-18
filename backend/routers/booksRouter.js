@@ -65,4 +65,18 @@ router.delete('/:id', requireAuthMiddleware, checkIsOwnerOrAdmin, async (req, re
     res.send(deletedBook);
 })
 
+router.post("/:id/reviews", requireAuthMiddleware, async (req, res) => {
+    try {
+        const reviewData = {
+            user: req.currentUser.id,
+            comment: req.body.comment
+        };
+
+        const updatedBook = await bookService.addReview(req.params.id, reviewData);
+        res.status(201).send(updatedBook);
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 module.exports = router;

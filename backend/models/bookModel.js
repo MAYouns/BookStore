@@ -17,6 +17,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: String,
+    required: true
+  },
   bookCoverImage: {
     type: String,
     required: true,
@@ -28,7 +32,23 @@ const bookSchema = new mongoose.Schema({
     required: true,
     validate: [(val) => val > 0, 'Price should be positive']
   },
-  reviews: [String],
+  reviews: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+      },
+      comment: {
+        type: String,
+        required: true
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
