@@ -17,7 +17,7 @@ router.post("/login", async (req, res) => {
   try {
     const token = await authService.login(req.body);
 
-    res.send({ "authToken": token, "role": await userService.getRole(req.body.username) });
+    res.send({ "authToken": token, "role": await userService.getRole(req.body.email) });
   } catch (err) {
     res.status(401).send({ message: err.message });
   }

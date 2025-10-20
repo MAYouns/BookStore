@@ -13,8 +13,8 @@ const getUserById = async (userId) => {
     const dbUser = await repo.getById(userId);
     return mapUser(dbUser);
 }
-const getRole = async (username) => {
-    const dbUser = await repo.getByEmail(username);
+const getRole = async (email) => {
+    const dbUser = await repo.getByEmail(email);
     return dbUser.role;
 }
 const updateUser = async (id, update) => {

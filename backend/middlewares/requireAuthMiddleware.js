@@ -10,7 +10,8 @@ const requireAuthMiddleware = async (req, res, next) => {
 
   try {
     const results = await authService.verifyToken(token);
-    req.currentUser = { username: results.username, role: results.role };
+    console.log("User authenticated:", results);
+    req.currentUser = { id: results.sub, email: results.email, role: results.role };
     return next();
   } catch (err) {
     console.log(err);
