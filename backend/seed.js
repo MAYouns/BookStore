@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
@@ -22,11 +23,12 @@ async function connectDB() {
 
 async function ensureAdmin() {
     let admin = await User.findOne({ role: "admin" });
+    const hashedPassword = await bcrypt.hash("admin123", 10);
     if (!admin) {
         admin = await User.create({
             name: "Admin",
-            email: "admin@example.com",
-            password: "admin123",
+            email: "admin@gmail.com",
+            password: hashedPassword,
             role: "admin",
         });
         console.log("🛡️ Admin user created");
