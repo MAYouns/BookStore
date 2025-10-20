@@ -15,9 +15,9 @@
             <div class="space-y-2">
                 <div class="flex relative items-center">
                     <input type="email" placeholder="Enter Email*"
-                        class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4"
+                        class="w-full border-0 ring-0 rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4"
                         formControlName="email" #email>
-                    <span class="absolute right-2 text-3xl text-gray-500 font-bold">@</span>
+                    <span class="absolute right-2 text-2xl text-gray-500 font-bold">@</span>
                     @if(!emailValid.value){
                     <p></p>
                     }
@@ -29,7 +29,7 @@
                 </div>
                 <div class="flex relative items-center">
                     <input type={{type}} placeholder="Enter Password*"
-                        class="w-full focus:outline-none rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4"
+                        class="w-full border-0 ring-0 rounded text-[18px] text-[#434244] bg-[#D6CE80] p-4"
                         formControlName="password" #password>
                     <button (click)="showHidePassword()" class="p-1 absolute right-0 h-full cursor-pointer"><img
                             src="icons/eye.png" alt=""></button>
