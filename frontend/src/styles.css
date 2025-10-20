@@ -1,34 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
-
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+@import 'flowbite/src/themes/default';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
 
 /* Write your global style here */
 
-:root{
-    --primary-color: #CC9600;
-    --primary-dark-color: #CA891D;
-    --secondary-color: #4B330B;
-    --error: #FA0505;
-    --font-family: "Bona Nova", serif;
+:root {
+  --primary-color: #cc9600;
+  --primary-dark-color: #ca891d;
+  --secondary-color: #4b330b;
+  --error: #fa0505;
+  --font-family: arial, serif;
 }
 
-body{
-    font-family:  var(--font-family);
+body {
+  font-family: var(--font-family);
 }
 
-.primary-color{
-    color: var(--primary-color);
+.primary-color {
+  color: var(--primary-color);
 }
-.primary-dark-color{
-    color: var(--primary-dark-color);
+.primary-dark-color {
+  color: var(--primary-dark-color);
 }
-.secondary-color{
-    color: var(--secondary-color);
+.secondary-color {
+  color: var(--secondary-color);
 }
-.error-color{
-    color: var(--error);
+.error-color {
+  color: var(--error);
+}
+.bg-primary-color {
+  background-color: var(--primary-color);
 }
 
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
 .bona-nova-regular {
   font-weight: 400;
   font-style: normal;
