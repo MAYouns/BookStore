@@ -35,22 +35,40 @@ async function ensureAdmin() {
     } else {
         console.log("🛡️ Admin user already exists");
     }
-    return admin._id;
+    return admin;
+}
+
+// helper function to pick random items from array
+function getRandomItems(arr, count) {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
 }
 
 async function seedBooks() {
     try {
-        const adminId = await ensureAdmin();
+        const admin = await ensureAdmin();
         const books = JSON.parse(fs.readFileSync(BOOKS_JSON, "utf8"));
         await Book.deleteMany({});
         console.log("🗑️ Old books removed");
+
         const booksWithAdmin = books.map((book) => ({
             ...book,
-            createdBy: adminId,
+            createdBy: admin._id,
         }));
 
-        await Book.insertMany(booksWithAdmin);
-        console.log(`📚 Inserted ${booksWithAdmin.length} books successfully`);
+        const insertedBooks = await Book.insertMany(booksWithAdmin);
+        console.log(`📚 Inserted ${insertedBooks.length} books successfully`);
+
+        // Add some random books to admin's cart and favourite
+        const randomCartBooks = getRandomItems(insertedBooks, 20).map(b => b._id);
+        const randomFavouriteBooks = getRandomItems(insertedBooks, 20).map(b => b._id);
+
+        admin.cart = randomCartBooks;
+        admin.favouriteBooks = randomFavouriteBooks;
+        await admin.save();
+
+        console.log(`🛒 Added ${randomCartBooks.length} books to admin's cart`);
+        console.log(`❤️ Added ${randomFavouriteBooks.length} books to admin's favourites`);
 
         process.exit(0);
     } catch (err) {
