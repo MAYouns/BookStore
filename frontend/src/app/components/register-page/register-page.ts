@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GoogleAuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
 import {
   FormControl,
   FormGroup,
@@ -16,7 +18,7 @@ import {
   styleUrl: './register-page.css',
 })
 export class RegisterPage {
-  constructor(private googleAuth: GoogleAuthService) {}
+  constructor(private googleAuth: GoogleAuthService, private router: Router) {}
   ngAfterViewInit() {
     this.googleAuth.initializeButton();
   }
@@ -49,9 +51,18 @@ export class RegisterPage {
   ) {
     this.data = {
       name: firstName.value + ' ' + lastName.value,
-      em: email.value,
-      pw: password.value,
+      email: email.value,
+      password: password.value,
     };
     console.log(this.data);
+    this.googleAuth.register(this.data).subscribe({
+      next: (res) => {
+        console.log('✅ User registered successfully:', res);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('❌ Registration failed:', err);
+      },
+    });
   }
 }

@@ -13,9 +13,9 @@ const getUserById = async (userId) => {
     const dbUser = await repo.getById(userId);
     return mapUser(dbUser);
 }
-const getRole = async (email) => {
+const getUserInfo = async (email) => {
     const dbUser = await repo.getByEmail(email);
-    return dbUser.role;
+    return mapUser(dbUser);
 }
 const updateUser = async (id, update) => {
     const dbUser = await repo.updateUser(id, update);
@@ -63,7 +63,7 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getRole,
+    getUserInfo,
     addToCart,
     removeFromCart,
     addFavourite,

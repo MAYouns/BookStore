@@ -52,10 +52,10 @@
                 <div id="google-signin-button"></div>
                 @if(myLogForm.valid){
                 <button class="bg-primary-color px-5 rounded font-bold cursor-pointer"
-                    (click)="addUser( password, email)">Login</button>
+                    (click)="loginUser( password, email)">Login</button>
                 } @else {
                 <button type="button" class="bg-gray-500 text-gray-400 cursor-not-allowed px-5 rounded font-bold"
-                    disabled (click)="addUser(password, email)">Login</button>
+                    disabled (click)="loginUser(password, email)">Login</button>
                 }
             </div>
         </form>

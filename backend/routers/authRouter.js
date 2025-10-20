@@ -16,9 +16,10 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const token = await authService.login(req.body);
-
-    res.send({ "authToken": token, "role": await userService.getRole(req.body.email) });
+    const userData = await userService.getUserInfo(req.body.email);
+    res.send({ "authToken": token, ...userData });
   } catch (err) {
+    console.log(err)
     res.status(401).send({ message: err.message });
   }
 });
