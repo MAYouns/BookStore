@@ -13,9 +13,9 @@ const getUserById = async (userId) => {
     const dbUser = await repo.getById(userId);
     return mapUser(dbUser);
 }
-const getRole = async (email) => {
+const getUserInfo = async (email) => {
     const dbUser = await repo.getByEmail(email);
-    return dbUser.role;
+    return mapUser(dbUser);
 }
 const updateUser = async (id, update) => {
     const dbUser = await repo.updateUser(id, update);
@@ -27,6 +27,17 @@ const deleteUser = async (id) => {
     return mapUser(deletedUser);
 }
 
+const getUserCart = async (userId) => {
+    const dbUser = await repo.getCart(userId);
+    return {
+        id: dbUser._id,
+        name: dbUser.name,
+        email: dbUser.email,
+        role: dbUser.role,
+        cart: dbUser.cart
+    };
+};
+
 const addToCart = async (userId, bookId) => {
     const dbUser = await repo.addToCart(userId, bookId);
     return mapUser(dbUser);
@@ -35,6 +46,17 @@ const addToCart = async (userId, bookId) => {
 const removeFromCart = async (userId, bookId) => {
     const dbUser = await repo.removeFromCart(userId, bookId);
     return mapUser(dbUser);
+};
+
+const getUserFavourites = async (userId) => {
+    const dbUser = await repo.getFavourites(userId);
+    return {
+        id: dbUser._id,
+        name: dbUser.name,
+        email: dbUser.email,
+        role: dbUser.role,
+        favouriteBooks: dbUser.favouriteBooks
+    };
 };
 
 const addFavourite = async (userId, bookId) => {
@@ -46,7 +68,6 @@ const removeFavourite = async (userId, bookId) => {
     const dbUser = await repo.removeFavourite(userId, bookId);
     return mapUser(dbUser);
 };
-
 
 const mapUser = (dbUser) => {
     return {
@@ -63,9 +84,11 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getRole,
+    getUserInfo,
+    getUserCart,
     addToCart,
     removeFromCart,
+    getUserFavourites,
     addFavourite,
     removeFavourite
 }
