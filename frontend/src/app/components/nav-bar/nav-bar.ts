@@ -25,4 +25,10 @@ export class NavBar {
     localStorage.removeItem('token');
     window.location.reload();
   }
+  toggleMenu() {
+    const toggleBtn = document.querySelector('[data-collapse-toggle="navbar-user"]') as HTMLElement;
+    if (toggleBtn) {
+      toggleBtn.click();
+    }
+  }
 }
