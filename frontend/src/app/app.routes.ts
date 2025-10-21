@@ -9,13 +9,13 @@ import { LoginPage } from './components/login-page/login-page';
 import { RegisterPage } from './components/register-page/register-page';
 
 export const routes: Routes = [
-    {path: '', pathMatch:'full', redirectTo: 'home'},
-    {path: 'home', component: HomePage},
-    {path: 'shop', component: ShopPage},
-    {path: 'bookDetails', component: BookDetailsPage},
-    {path: 'cart', component: CartPage},
-    {path: 'about', component: AboutPage},
-    {path: 'favouriteBooks', component: FavouriteBookPage},
-    {path: 'login', component: LoginPage},
-    {path: 'register', component: RegisterPage}
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: 'home', component: HomePage },
+  { path: 'shop', component: ShopPage },
+  { path: 'bookDetails', component: BookDetailsPage },
+  { path: 'cart', component: CartPage },
+  { path: 'about', component: AboutPage },
+  { path: 'favouriteBooks', component: FavouriteBookPage },
+  { path: 'login', component: LoginPage },
+  { path: 'register', component: RegisterPage },
 ];
