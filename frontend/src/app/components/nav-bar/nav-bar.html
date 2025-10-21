@@ -6,7 +6,7 @@
         </div>
 
         <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse sm:mr-9">
-            @if(true){
+            @if(!isLogin){
             <div class="space-x-4">
                 <button><a routerLink="login" class="bg-[var(--secondary-color)] p-3 rounded text-sm">Login</a></button>
                 <button><a routerLink="register"
@@ -14,7 +14,7 @@
             </div>
             } @else {
             <div class="space-y-2 flex items-center space-x-3">
-                <span class="text-sm mt-2">Mostafa Youns</span>
+                <span class="text-sm mt-2">{{name}}</span>
                 <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 dark:focus:ring-gray-600"
                     id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
                     data-dropdown-placement="bottom">
@@ -26,13 +26,12 @@
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600"
                 id="user-dropdown">
                 <div class="px-4 py-3">
-                    <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                    <span class="block text-sm text-gray-900 dark:text-white">{{name}}</span>
+                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{email}}</span>
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
-                    @for (item of userList; track $index) {
-                    <li><a routerLink={{item.toLowerCase()}} class={{linkStyleUser}}>{{item}}</a></li>
-                    }
+                    <li><a routerLink='/dashboard' class={{linkStyleUser}}>dashboard</a></li>
+                    <li><a routerLink='/home' class={{linkStyleUser}} (click)="signOut()">signOut</a></li>
                 </ul>
             </div>
             <button data-collapse-toggle="navbar-user" type="button"
@@ -53,6 +52,8 @@
                 @for (item of list; track $index) {
                 <li><a routerLink={{item.toLowerCase()}} class={{linkStyle}}>{{item}}</a></li>
                 }
+                <li class="flex"><a routerLink="cart" class={{linkStyle}}>cart <span
+                            class="primary-color font-bold">0</span></a></li>
             </ul>
         </div>
     </div>

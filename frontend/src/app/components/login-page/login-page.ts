@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GoogleAuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
 import {
   FormControl,
   FormGroup,
@@ -16,7 +19,12 @@ import {
   styleUrl: './login-page.css',
 })
 export class LoginPage {
-  constructor(private googleAuth: GoogleAuthService) {}
+  constructor(
+    private googleAuth: GoogleAuthService,
+    private http: HttpClient,
+    private router: Router
+  ) {}
+
   ngAfterViewInit() {
     this.googleAuth.initializeButton();
   }
@@ -41,11 +49,23 @@ export class LoginPage {
     if (this.type == 'password') this.type = 'text';
     else this.type = 'password';
   }
-  addUser(password: HTMLInputElement, email: HTMLInputElement) {
+  loginUser(password: HTMLInputElement, email: HTMLInputElement) {
     this.data = {
-      em: email.value,
-      pw: password.value,
+      email: email.value,
+      password: password.value,
     };
-    console.log(this.data);
+    this.http.post('http://localhost:3000/api/v1/auth/login', this.data).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', res.authToken);
+        localStorage.setItem('userId', res.id);
+        localStorage.setItem('username', res.name);
+        localStorage.setItem('email', res.email);
+        localStorage.setItem('role', res.role);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        alert(err.error?.message);
+      },
+    });
   }
 }

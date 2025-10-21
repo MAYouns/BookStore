@@ -39,6 +39,13 @@ router.delete('/:id', checkIsAdmin, async (req, res) => {
     }
 })
 
+// get user's cart
+router.get('/cart', async (req, res) => {
+    const userId = req.currentUser.id;
+    const cart = await userService.getUserCart(userId);
+    res.send(cart);
+});
+
 // add book to cart
 router.post('/cart/:bookId', async (req, res) => {
     const userId = req.currentUser.id;
@@ -53,6 +60,13 @@ router.delete('/cart/:bookId', async (req, res) => {
     const bookId = req.params.bookId;
     const updated = await userService.removeFromCart(userId, bookId);
     res.send(updated);
+});
+
+// get user's favourite books
+router.get('/favourite', async (req, res) => {
+    const userId = req.currentUser.id;
+    const favourites = await userService.getUserFavourites(userId);
+    res.send(favourites);
 });
 
 // add favourite
