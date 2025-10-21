@@ -22,8 +22,9 @@ async function connectDB() {
 }
 
 async function ensureAdmin() {
+    await User.deleteMany();
     let admin = await User.findOne({ role: "admin" });
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedPassword = await bcrypt.hash("Mostafa@123", 10);
     if (!admin) {
         admin = await User.create({
             name: "Admin",
