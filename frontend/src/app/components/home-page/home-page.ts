@@ -27,7 +27,7 @@ export class HomePage implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<Book[]>('http://localhost:3000/api/books')
+    this.http.get<Book[]>('http://localhost:3000/api/v1/books')
       .subscribe({
         next: (books) => {
           console.log('Received books:', books);
