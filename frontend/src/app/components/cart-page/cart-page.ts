@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 interface Book {
+  id: string;
   title: string;
   author: string;
   price: number;
@@ -33,14 +35,15 @@ export class CartPage implements OnInit {
 
   cartItems = signal<Book[]>([]);
 
-  // NOTE: REPLACE THIS WITH YOUR ACTUAL BACKEND ENDPOINT
-  private cartApiUrl = '/api/cart/items';
+  private cartApiUrl = 'http://localhost:3000/api/v1/users/cart';
 
   showCheckoutModal = signal(false);
-  isLoading = signal(true);
+  notification = signal<{ type: 'success' | 'error'; text: string } | null>(null);
 
   totalPrice = computed(() => {
-    return this.cartItems().reduce((total, item) => total + item.price * item.quantity, 0);
+    return this.cartItems()
+      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .toFixed(2);
   });
 
   checkoutDetails = signal<CheckoutDetails>({
@@ -57,32 +60,56 @@ export class CartPage implements OnInit {
   }
 
   fetchCartItems(): void {
-    this.isLoading.set(true);
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-    this.http
-      .get<Book[]>(this.cartApiUrl)
-      .pipe(tap(() => console.log(`Fetching cart items from: ${this.cartApiUrl}`)))
-      .subscribe({
-        next: (data) => {
-          this.cartItems.set(data);
-          this.isLoading.set(false);
-          console.log('Cart items loaded successfully.');
-        },
-        error: (err) => {
-          console.error('Failed to load cart items:', err);
-          this.isLoading.set(false);
-          const fallbackData: Book[] = [];
-          this.cartItems.set(fallbackData);
-        },
-      });
+    this.http.get<any>(this.cartApiUrl, { headers, responseType: 'json' as const }).subscribe({
+      next: (resp) => {
+        const cart = resp?.cart ?? [];
+        const mapped: Book[] = cart.map((b: any) => ({
+          id: b._id ?? b.id ?? '',
+          title: b.title ?? b.name ?? 'Untitled',
+          author: b.author ?? b.writer ?? '',
+          price: typeof b.price === 'number' ? b.price : Number(b.price) || 0,
+          imageUrl: b.bookCoverImage || '/assets/default-book.png',
+          quantity: b.quantity ?? 1,
+        }));
+
+        this.cartItems.set(mapped);
+      },
+      error: (err) => {
+        console.error('Failed to load cart items from backend:', err);
+        this.cartItems.set([]);
+      },
+    });
   }
 
   updateQuantity(bookToUpdate: Book, newQuantity: number): void {
+    if (newQuantity <= 0) {
+      this.removeBookFromCart(bookToUpdate);
+      return;
+    }
+
     if (newQuantity < 1) newQuantity = 1;
 
     this.cartItems.update((items) =>
       items.map((item) => (item === bookToUpdate ? { ...item, quantity: newQuantity } : item))
     );
+  }
+
+  private removeBookFromCart(book: Book): void {
+    this.cartItems.update((items) => items.filter((it) => it !== book));
+
+    const id = book.id;
+
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+    const url = `${this.cartApiUrl}/${id}`;
+
+    this.http.delete(url, { headers }).subscribe({
+      next: () => console.log(`Deleted cart item ${id} from server`),
+      error: (err) => console.error(`Failed to delete cart item ${id}:`, err),
+    });
   }
 
   onInputChange(field: keyof CheckoutDetails, value: string | number | null): void {
@@ -93,7 +120,7 @@ export class CartPage implements OnInit {
   }
 
   openCheckoutModal(): void {
-    if (this.cartItems.length === 0) {
+    if (this.cartItems().length === 0) {
       alert('Your Cart is Empty');
       return;
     }
@@ -113,12 +140,65 @@ export class CartPage implements OnInit {
       contactNumber: '',
       cardNumber: '',
     });
+    // clear transient notifications when the modal is explicitly closed
+    this.notification.set(null);
   }
 
   payNow(): void {
-    console.log('Attempting payment with details:', this.checkoutDetails());
-    // This is where you would make the final checkout API call.
-    alert('Payment initiated! (Check console for details)');
-    this.closeCheckoutModal();
+    const details = this.checkoutDetails();
+    const requiredFields: (keyof typeof details)[] = [
+      'receiverName',
+      'billingAddress',
+      'sendingAddress',
+      'province',
+      'contactNumber',
+      'cardNumber',
+    ];
+
+    const missing = requiredFields.filter((k) => !details[k] || String(details[k]).trim() === '');
+
+    if (missing.length > 0) {
+      this.notification.set({ type: 'error', text: 'All fields must be filled' });
+      setTimeout(() => this.notification.set(null), 3000);
+      return;
+    }
+
+    this.notification.set({
+      type: 'success',
+      text: 'Payment successful — expect a call in 2-3 working days from our delivery team.',
+    });
+    this.checkoutDetails.set({
+      receiverName: '',
+      billingAddress: '',
+      sendingAddress: '',
+      province: '',
+      contactNumber: '',
+      cardNumber: '',
+    });
+    this.clearCartOnSuccess();
+  }
+
+  private async clearCartOnSuccess(): Promise<void> {
+    const items = this.cartItems();
+    if (!items || items.length === 0) return;
+
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+
+    const deletePromises = items
+      .map((it) => it.id)
+      .filter(Boolean)
+      .map((id) => {
+        const url = `${this.cartApiUrl}/${id}`;
+        return lastValueFrom(this.http.delete(url, { headers }));
+      });
+
+    try {
+      await Promise.all(deletePromises);
+      this.cartItems.set([]);
+      console.log('Cleared user cart after successful checkout.');
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
