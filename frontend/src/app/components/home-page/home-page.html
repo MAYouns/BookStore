@@ -33,32 +33,44 @@
     <section class="max-w-6xl mx-auto px-6 md:px-12 lg:px-20 py-12 bg-white">
       <h2 class="text-center text-3xl md:text-4xl font-semibold mb-8 font-serif">Our Best Picks</h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-start">
-        <ng-container *ngFor="let book of bestPicks">
-          <div class="flex flex-col items-center text-center">
-            <div class="w-44 h-60 bg-gray-100 rounded-md overflow-hidden shadow-sm">
-              <img [src]="book.cover" [alt]="book.title" class="w-full h-full object-cover" />
-            </div>
-            <h3 class="mt-3 font-semibold text-sm">{{ book.title }}</h3>
-            <p class="text-xs text-gray-500">{{ book.author }}</p>
+      <div class="relative overflow-hidden">
+        <div class="transition-transform duration-300 ease-in-out" 
+             [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+          <div class="flex">
+            <ng-container *ngFor="let slide of bookSlides">
+              <div class="min-w-full">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-start">
+                  <ng-container *ngFor="let book of slide">
+                    <div class="flex flex-col items-center text-center">
+                      <div class="w-44 h-60 bg-gray-100 rounded-md overflow-hidden shadow-sm">
+                        <img [src]="book.bookCoverImage" [alt]="book.title" class="w-full h-full object-cover" />
+                      </div>
+                      <h3 class="mt-3 font-semibold text-sm">{{ book.title }}</h3>
+                      <p class="text-xs text-gray-500">{{ book.author }}</p>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
           </div>
-        </ng-container>
+        </div>
       </div>
 
       <div class="mt-8 flex justify-center items-center gap-3">
-        <button (click)="prevSlide()" class="p-2 rounded-full border border-gray-200">‹</button>
+        <button (click)="prevSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">‹</button>
         <div class="flex gap-2">
-          <ng-container *ngFor="let b of bestPicks; let i = index">
+          <ng-container *ngFor="let slide of bookSlides; let i = index">
             <div
-              class="w-3 h-3 rounded-full"
+              class="w-3 h-3 rounded-full cursor-pointer"
               [class.bg-[#CC9600]]="i === currentSlide"
               [class.bg-white]="i !== currentSlide"
               [class.border]="i !== currentSlide"
-              [class.border-gray-300]="i !== currentSlide">
+              [class.border-gray-300]="i !== currentSlide"
+              (click)="currentSlide = i">
             </div>
           </ng-container>
         </div>
-        <button (click)="nextSlide()" class="p-2 rounded-full border border-gray-200">›</button>
+        <button (click)="nextSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">›</button>
       </div>
     </section>
 
@@ -103,6 +115,5 @@
         </div>
       </div>
     </section>
-
   </main>
 </div>
