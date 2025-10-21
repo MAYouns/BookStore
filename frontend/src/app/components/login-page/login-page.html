@@ -42,6 +42,20 @@
                     <p class="absolute -right-14 error-color">invalid</p>
                     }
                 </div>
+                @if(!passwordValid.value){
+                <div></div>
+                }
+                @else if(passwordValid.valid){
+                <div class="flex flex-col text-left pl-4 text-emerald-500">
+                    <span>start with capital letter*</span>
+                    <span>should contain numbers, <span>small letters, </span> <span>special letters</span></span>
+                </div>
+                } @else {
+                <div class="flex flex-col text-left pl-4 error-color">
+                    <span>start with capital letter*</span>
+                    <span>should contain numbers, <span>small letters, </span> <span>special letters</span></span>
+                </div>
+                }
             </div>
             <p class="text-left">
                 Don't you have an account?
