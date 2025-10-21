@@ -33,14 +33,6 @@
                         formControlName="password" #password>
                     <button (click)="showHidePassword()" class="p-1 absolute right-0 h-full cursor-pointer"><img
                             src="icons/eye.png" alt=""></button>
-                    @if(!passwordValid.value){
-                    <p></p>
-                    }
-                    @else if (passwordValid.valid) {
-                    <p class="absolute -right-10 text-emerald-500">valid</p>
-                    } @else {
-                    <p class="absolute -right-14 error-color">invalid</p>
-                    }
                 </div>
                 @if(!passwordValid.value){
                 <div></div>
