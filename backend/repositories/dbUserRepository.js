@@ -24,6 +24,10 @@ const deleteUser = async (id) => {
     return UserModel.findByIdAndDelete(id);
 }
 
+const getCart = async (userId) => {
+    return await UserModel.findById(userId).populate('cart');
+};
+
 const addToCart = async (userId, bookId) => {
     return await UserModel.findByIdAndUpdate(
         userId,
@@ -38,6 +42,10 @@ const removeFromCart = async (userId, bookId) => {
         { $pull: { cart: bookId } },
         { new: true }
     ).populate('cart');
+};
+
+const getFavourites = async (userId) => {
+    return await UserModel.findById(userId).populate('favouriteBooks');
 };
 
 const addFavourite = async (userId, bookId) => {
@@ -64,8 +72,10 @@ module.exports = {
     getByEmail,
     updateUser,
     deleteUser,
+    getCart,
     addToCart,
     removeFromCart,
+    getFavourites,
     addFavourite,
     removeFavourite
 }

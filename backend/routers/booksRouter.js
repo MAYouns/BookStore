@@ -1,6 +1,5 @@
 const bookService = require("../services/bookServices");
 const express = require("express");
-const checkIsAdmin = require('../middlewares/checkIsAdmin');
 const checkIsOwnerOrAdmin = require('../middlewares/checkIsOwnerOrAdmin');
 const requireAuthMiddleware = require('../middlewares/requireAuthMiddleware');
 const router = express.Router();
