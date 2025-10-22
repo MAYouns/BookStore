@@ -14,10 +14,12 @@ import { initFlowbite } from 'flowbite';
 export class App {
   protected readonly title = signal('frontend');
   navbar = true;
+  pages = ['/', '/home', '/shop', '/bookDetails', '/cart', '/about', '/favouriteBooks'];
+
   constructor(private router: Router) {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {
       console.log(e.url);
-      this.navbar = e.url === '/login' || e.url === '/register' ? false : true;
+      this.navbar = !this.pages.includes(e.url) ? false : true;
     });
   }
   ngOnInit(): void {
