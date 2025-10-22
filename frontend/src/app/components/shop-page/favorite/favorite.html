@@ -1,0 +1,9 @@
+<button (click)="onToggleClick()" class="cursor-pointer">
+  <i
+    [class.fa-solid]="isFavorite"
+    [class.fa-regular]="!isFavorite"
+    class="fa-heart text-2xl transition-colors duration-200"
+    [class.text-red-500]="isFavorite"
+    [class.text-gray-800]="!isFavorite"
+  ></i>
+</button>

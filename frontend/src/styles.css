@@ -4,12 +4,16 @@
 
 /* Write your global style here */
 
+@theme{
+  --color-darkAmber: #CC9600;
+}
+
 :root{
     --primary-color: #CC9600;
     --primary-dark-color: #CA891D;
     --secondary-color: #4B330B;
     --error: #FA0505;
-    --font-family: "Bona Nova", serif;
+    --font-family: arial, serif;
 }
 
 body{
@@ -42,4 +46,8 @@ body{
 .bona-nova-regular-italic {
   font-weight: 400;
   font-style: italic;
+}
+
+@theme{
+  --color-amber: #CC9600
 }
