@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const stripe = require('stripe')('sk_test_51SL7v8Ap2n0uexvkhYtWBbnIKHCPjet8udQEP1N4EmRpPZMJ1VPNKAzyN6VfYZfi8L3dzqHrP9cJa5AMSx4rDvyl00StbpOB6v'); // المفتاح السري بتاعك
+const stripe = require('stripe')('sk_test_51SL7v8Ap2n0uexvkhYtWBbnIKHCPjet8udQEP1N4EmRpPZMJ1VPNKAzyN6VfYZfi8L3dzqHrP9cJa5AMSx4rDvyl00StbpOB6v');
 
 router.post('/create-checkout-session', async (req, res) => {
     try {
