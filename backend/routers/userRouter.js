@@ -61,6 +61,17 @@ router.delete('/cart/:bookId', async (req, res) => {
     const updated = await userService.removeFromCart(userId, bookId);
     res.send(updated);
 });
+// clear all cart items
+router.delete('/cart', async (req, res) => {
+    try {
+        const userId = req.currentUser.id;
+        const updated = await userService.clearCart(userId);
+        res.send(updated);
+    } catch (error) {
+        console.error('Error clearing cart:', error);
+        res.status(500).send({ message: 'Failed to clear cart' });
+    }
+});
 
 // get user's favourite books
 router.get('/favourite', async (req, res) => {
