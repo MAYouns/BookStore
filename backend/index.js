@@ -7,6 +7,7 @@ const userRouter = require('./routers/userRouter');
 const booksRouter = require('./routers/booksRouter');
 const { PORT, PREFIX, MONGODB_URL } = require('./configs/envConfigs');
 const app = express();
+const stripeRoutes = require("./routers/stripeRouter");
 
 app.use(cors())
 app.use(express.json());
@@ -14,6 +15,8 @@ app.use(express.json());
 mongoose.connect(MONGODB_URL).then(() => console.log("DB Connected successfully."));
 
 app.use(loggerMiddleware)
+
+app.use("/api/v1/stripe", stripeRoutes);
 
 app.use(PREFIX + '/auth', authentication);
 app.use(PREFIX + '/books', booksRouter);
