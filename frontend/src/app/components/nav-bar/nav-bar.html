@@ -1,11 +1,11 @@
 <nav class="text-white bg-[url('/images/navBar.png')] bg-cover ">
-    <div class="flex flex-wrap items-center justify-between mx-auto">
+    <div class="flex flex-wrap items-center justify-between mx-auto py-2">
         <div class="logo flex items-center primary-color ml-9 space-x-2">
             <img routerLink="home" src="images/logo.png" alt="" width="80" class="cursor-pointer">
             <p class="text-3xl">Papy<span class="text-amber-700">rus</span></p>
         </div>
 
-        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse sm:mr-9">
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-9">
             @if(!isLogin){
             <div class="space-x-4">
                 <button><a routerLink="login" class="bg-[var(--secondary-color)] p-3 rounded text-sm">Login</a></button>
@@ -50,10 +50,13 @@
             <ul
                 class="flex flex-col font-medium p-4 md:p-0 mt-4  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 @for (item of list; track $index) {
-                <li><a routerLink={{item.toLowerCase()}} class={{linkStyle}}>{{item}}</a></li>
+                <li><a routerLink={{item.toLowerCase()}} class={{linkStyle}} (click)="toggleMenu()">{{item}}</a></li>
                 }
-                <li class="flex"><a routerLink="cart" class={{linkStyle}}>cart <span
-                            class="primary-color font-bold">0</span></a></li>
+                <li>
+                    <a routerLink="cart" class={{linkStyle}} (click)="toggleMenu()">
+                        cart <span class="primary-color font-bold ">0</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
