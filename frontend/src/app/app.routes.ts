@@ -7,6 +7,7 @@ import { AboutPage } from './components/about-page/about-page';
 import { FavouriteBookPage } from './components/favourite-book-page/favourite-book-page';
 import { LoginPage } from './components/login-page/login-page';
 import { RegisterPage } from './components/register-page/register-page';
+import { NotFound } from './components/not-found/not-found';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'favouriteBooks', component: FavouriteBookPage },
   { path: 'login', component: LoginPage },
   { path: 'register', component: RegisterPage },
+  { path: '**', component: NotFound },
 ];
