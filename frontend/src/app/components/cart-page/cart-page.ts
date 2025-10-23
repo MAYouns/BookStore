@@ -225,27 +225,27 @@ export class CartPage implements OnInit {
     }
   }
 
-  // private async clearCartOnSuccess(): Promise<void> {
-  //   const items = this.cartItems();
-  //   if (!items || items.length === 0) return;
+  //   private async clearCartOnSuccess(): Promise<void> {
+  //     const items = this.cartItems();
+  //     if (!items || items.length === 0) return;
 
-  //   const token = localStorage.getItem('token');
-  //   const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+  //     const token = localStorage.getItem('token');
+  //     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-  //   const deletePromises = items
-  //     .map((it) => it.id)
-  //     .filter(Boolean)
-  //     .map((id) => {
-  //       const url = `${this.cartApiUrl}/${id}`;
-  //       return lastValueFrom(this.http.delete(url, { headers }));
-  //     });
+  //     const deletePromises = items
+  //       .map((it) => it.id)
+  //       .filter(Boolean)
+  //       .map((id) => {
+  //         const url = `${this.cartApiUrl}/${id}`;
+  //         return lastValueFrom(this.http.delete(url, { headers }));
+  //       });
 
-  //   try {
-  //     await Promise.all(deletePromises);
-  //     this.cartItems.set([]);
-  //     console.log('Cleared user cart after successful checkout.');
-  //   } catch (err) {
-  //     console.error(err);
+  //     try {
+  //       await Promise.all(deletePromises);
+  //       this.cartItems.set([]);
+  //       console.log('Cleared user cart after successful checkout.');
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
   //   }
-  // }
 }
