@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
+import { loadStripe } from '@stripe/stripe-js';
 
 interface Book {
   id: string;
@@ -140,11 +141,44 @@ export class CartPage implements OnInit {
       contactNumber: '',
       cardNumber: '',
     });
-    // clear transient notifications when the modal is explicitly closed
     this.notification.set(null);
   }
 
-  payNow(): void {
+  // async payNow(): Promise<void> {
+  //   const details = this.checkoutDetails();
+  //   const requiredFields: (keyof typeof details)[] = [
+  //     'receiverName',
+  //     'billingAddress',
+  //     'sendingAddress',
+  //     'province',
+  //     'contactNumber',
+  //     'cardNumber',
+  //   ];
+
+  //   const missing = requiredFields.filter((k) => !details[k] || String(details[k]).trim() === '');
+
+  //   if (missing.length > 0) {
+  //     this.notification.set({ type: 'error', text: 'All fields must be filled' });
+  //     setTimeout(() => this.notification.set(null), 3000);
+  //     return;
+  //   }
+
+  //   this.notification.set({
+  //     type: 'success',
+  //     text: 'Payment successful — expect a call in 2-3 working days from our delivery team.',
+  //   });
+  //   this.checkoutDetails.set({
+  //     receiverName: '',
+  //     billingAddress: '',
+  //     sendingAddress: '',
+  //     province: '',
+  //     contactNumber: '',
+  //     cardNumber: '',
+  //   });
+  //   this.clearCartOnSuccess();
+  // }
+
+  async payNow(): Promise<void> {
     const details = this.checkoutDetails();
     const requiredFields: (keyof typeof details)[] = [
       'receiverName',
@@ -163,42 +197,55 @@ export class CartPage implements OnInit {
       return;
     }
 
-    this.notification.set({
-      type: 'success',
-      text: 'Payment successful — expect a call in 2-3 working days from our delivery team.',
-    });
-    this.checkoutDetails.set({
-      receiverName: '',
-      billingAddress: '',
-      sendingAddress: '',
-      province: '',
-      contactNumber: '',
-      cardNumber: '',
-    });
-    this.clearCartOnSuccess();
-  }
-
-  private async clearCartOnSuccess(): Promise<void> {
-    const items = this.cartItems();
-    if (!items || items.length === 0) return;
-
-    const token = localStorage.getItem('token');
-    const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
-
-    const deletePromises = items
-      .map((it) => it.id)
-      .filter(Boolean)
-      .map((id) => {
-        const url = `${this.cartApiUrl}/${id}`;
-        return lastValueFrom(this.http.delete(url, { headers }));
-      });
-
     try {
-      await Promise.all(deletePromises);
-      this.cartItems.set([]);
-      console.log('Cleared user cart after successful checkout.');
-    } catch (err) {
-      console.error(err);
+      const products = this.cartItems().map((book) => ({
+        title: book.title,
+        price: book.price,
+        quantity: book.quantity,
+      }));
+
+      const session = await this.http
+        .post<{ url: string }>('http://localhost:3000/api/v1/stripe/create-checkout-session', {
+          products,
+        })
+        .toPromise();
+
+      if (session && session.url) {
+        window.location.href = session.url;
+      } else {
+        throw new Error('No checkout URL returned from server');
+      }
+    } catch (error: any) {
+      console.error('Stripe checkout error:', error);
+      this.notification.set({
+        type: 'error',
+        text: error.message || 'Failed to start payment process. Please try again.',
+      });
+      setTimeout(() => this.notification.set(null), 4000);
     }
   }
+
+  // private async clearCartOnSuccess(): Promise<void> {
+  //   const items = this.cartItems();
+  //   if (!items || items.length === 0) return;
+
+  //   const token = localStorage.getItem('token');
+  //   const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+
+  //   const deletePromises = items
+  //     .map((it) => it.id)
+  //     .filter(Boolean)
+  //     .map((id) => {
+  //       const url = `${this.cartApiUrl}/${id}`;
+  //       return lastValueFrom(this.http.delete(url, { headers }));
+  //     });
+
+  //   try {
+  //     await Promise.all(deletePromises);
+  //     this.cartItems.set([]);
+  //     console.log('Cleared user cart after successful checkout.');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 }
