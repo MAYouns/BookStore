@@ -144,40 +144,6 @@ export class CartPage implements OnInit {
     this.notification.set(null);
   }
 
-  // async payNow(): Promise<void> {
-  //   const details = this.checkoutDetails();
-  //   const requiredFields: (keyof typeof details)[] = [
-  //     'receiverName',
-  //     'billingAddress',
-  //     'sendingAddress',
-  //     'province',
-  //     'contactNumber',
-  //     'cardNumber',
-  //   ];
-
-  //   const missing = requiredFields.filter((k) => !details[k] || String(details[k]).trim() === '');
-
-  //   if (missing.length > 0) {
-  //     this.notification.set({ type: 'error', text: 'All fields must be filled' });
-  //     setTimeout(() => this.notification.set(null), 3000);
-  //     return;
-  //   }
-
-  //   this.notification.set({
-  //     type: 'success',
-  //     text: 'Payment successful — expect a call in 2-3 working days from our delivery team.',
-  //   });
-  //   this.checkoutDetails.set({
-  //     receiverName: '',
-  //     billingAddress: '',
-  //     sendingAddress: '',
-  //     province: '',
-  //     contactNumber: '',
-  //     cardNumber: '',
-  //   });
-  //   this.clearCartOnSuccess();
-  // }
-
   async payNow(): Promise<void> {
     const details = this.checkoutDetails();
     const requiredFields: (keyof typeof details)[] = [
@@ -225,27 +191,27 @@ export class CartPage implements OnInit {
     }
   }
 
-  //   private async clearCartOnSuccess(): Promise<void> {
-  //     const items = this.cartItems();
-  //     if (!items || items.length === 0) return;
+  private async clearCartOnSuccess(): Promise<void> {
+    const items = this.cartItems();
+    if (!items || items.length === 0) return;
 
-  //     const token = localStorage.getItem('token');
-  //     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-  //     const deletePromises = items
-  //       .map((it) => it.id)
-  //       .filter(Boolean)
-  //       .map((id) => {
-  //         const url = `${this.cartApiUrl}/${id}`;
-  //         return lastValueFrom(this.http.delete(url, { headers }));
-  //       });
+    const deletePromises = items
+      .map((it) => it.id)
+      .filter(Boolean)
+      .map((id) => {
+        const url = `${this.cartApiUrl}/${id}`;
+        return lastValueFrom(this.http.delete(url, { headers }));
+      });
 
-  //     try {
-  //       await Promise.all(deletePromises);
-  //       this.cartItems.set([]);
-  //       console.log('Cleared user cart after successful checkout.');
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
+    try {
+      await Promise.all(deletePromises);
+      this.cartItems.set([]);
+      console.log('Cleared user cart after successful checkout.');
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
