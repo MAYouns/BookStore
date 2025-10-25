@@ -13,29 +13,17 @@ import { SuccessPage } from './components/success-page/success-page';
 import { CancelPage } from './components/cancel-page/cancel-page';
 
 export const routes: Routes = [
-<<<<<<< HEAD
-    {path: '', pathMatch:'full', redirectTo: 'home'},
-    {path: 'home', component: HomePage},
-    {path: 'books', component: ShopPage},
-    {path: 'books/:id', component: BookDetailsPage},
-    {path: 'cart', component: CartPage},
-    {path: 'about', component: AboutPage},
-    {path: 'favourite', component: FavouriteBookPage},
-    {path: 'login', component: LoginPage},
-    {path: 'register', component: RegisterPage}
-=======
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomePage },
   { path: 'shop', component: ShopPage },
-  { path: 'bookDetails', component: BookDetailsPage },
+  { path: 'books/:id', component: BookDetailsPage },
   { path: 'cart', component: CartPage },
   { path: 'about', component: AboutPage },
-  { path: 'favouriteBooks', component: FavouriteBookPage },
+  { path: 'favourite', component: FavouriteBookPage },
   { path: 'login', component: LoginPage },
   { path: 'register', component: RegisterPage },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', component: NotFound },
->>>>>>> 88f6fa61249e3583fe8f5b152839ae71af7afbed
 ];
