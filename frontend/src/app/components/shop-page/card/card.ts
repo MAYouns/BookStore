@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { Book } from '../services/cart.service';
-import { FavoritesService } from '../services/favorite.service';
+import { Book } from '../../../services/cart.service';
+import { FavoritesService } from '../../../services/favorite.service';
 
 @Component({
   selector: 'app-card',

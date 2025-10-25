@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
-import { BookService } from '../shop-page/services/book.service';
-import { Book } from '../shop-page/services/cart.service';
-import { ReviewService, Review } from '../shop-page/services/review.service';
+import { BookService } from '../../services/book.service';
+import { Book } from '../../services/cart.service';
+import { ReviewService, Review } from '../../services/review.service';
 import { ReviewModalComponent } from '../review-modal/review-modal';
 
 @Component({
@@ -30,31 +30,34 @@ export class BookDetailsPage implements OnInit {
       userInitials: 'JC',
       rating: 5,
       title: 'Absolutely Captivating',
-      comment: "This mystery kept me on the edge of my seat from start to finish. Emily Carter's writing is masterful, and the twist at the end was completely unexpected. Highly recommend!",
+      comment:
+        "This mystery kept me on the edge of my seat from start to finish. Emily Carter's writing is masterful, and the twist at the end was completely unexpected. Highly recommend!",
       date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
       verified: true,
-      color: 'from-blue-400 to-blue-600'
+      color: 'from-blue-400 to-blue-600',
     },
     {
       userName: 'Michael Davis',
       userInitials: 'MD',
       rating: 4,
       title: 'Great Read, Slightly Predictable',
-      comment: 'The Silent Observer is an engaging mystery with well-developed characters. While some plot points felt familiar, the atmospheric setting more than makes up for it. Worth picking up!',
+      comment:
+        'The Silent Observer is an engaging mystery with well-developed characters. While some plot points felt familiar, the atmospheric setting more than makes up for it. Worth picking up!',
       date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       verified: true,
-      color: 'from-purple-400 to-purple-600'
+      color: 'from-purple-400 to-purple-600',
     },
     {
       userName: 'Sarah Rodriguez',
       userInitials: 'SR',
       rating: 5,
       title: 'Perfect Mystery Novel',
-      comment: "I couldn't put this book down! The pacing is perfect, the dialogue feels natural, and the mystery elements are woven seamlessly throughout. A fantastic addition to any mystery lover's library.",
+      comment:
+        "I couldn't put this book down! The pacing is perfect, the dialogue feels natural, and the mystery elements are woven seamlessly throughout. A fantastic addition to any mystery lover's library.",
       date: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000),
       verified: true,
-      color: 'from-green-400 to-green-600'
-    }
+      color: 'from-green-400 to-green-600',
+    },
   ];
 
   constructor(
@@ -75,7 +78,7 @@ export class BookDetailsPage implements OnInit {
     this.bookService.getBooks().subscribe({
       next: (books) => {
         const booksArray = Array.isArray(books) ? books : books['books'];
-        this.book = booksArray.find(b => b._id === id);
+        this.book = booksArray.find((b) => b._id === id);
 
         if (!this.book) {
           this.error = 'Book not found';
@@ -98,9 +101,8 @@ export class BookDetailsPage implements OnInit {
     });
   }
 
-
   loadReviews(): void {
-    console.log(this.book?.title)
+    console.log(this.book?.title);
     if (!this.book) return;
 
     this.userReviews = this.reviewService.getReviewsByBookId(this.book._id);
@@ -145,7 +147,7 @@ export class BookDetailsPage implements OnInit {
       'from-red-400 to-red-600',
       'from-yellow-400 to-yellow-600',
       'from-pink-400 to-pink-600',
-      'from-indigo-400 to-indigo-600'
+      'from-indigo-400 to-indigo-600',
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }

@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReviewService } from '../shop-page/services/review.service';
+import { ReviewService } from '../../services/review.service';
 
 @Component({
   selector: 'app-review-modal',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './review-modal.html'
+  templateUrl: './review-modal.html',
 })
 export class ReviewModalComponent {
   @Input() isOpen = false;
@@ -19,7 +19,7 @@ export class ReviewModalComponent {
     userName: '',
     rating: 0,
     title: '',
-    comment: ''
+    comment: '',
   };
 
   submitted = false;
@@ -38,10 +38,12 @@ export class ReviewModalComponent {
   submitReview(): void {
     this.submitted = true;
 
-    if (!this.reviewData.userName ||
-        this.reviewData.rating === 0 ||
-        !this.reviewData.title ||
-        !this.reviewData.comment) {
+    if (
+      !this.reviewData.userName ||
+      this.reviewData.rating === 0 ||
+      !this.reviewData.title ||
+      !this.reviewData.comment
+    ) {
       return;
     }
 
@@ -51,7 +53,7 @@ export class ReviewModalComponent {
       userInitials: this.reviewService.getInitials(this.reviewData.userName),
       rating: this.reviewData.rating,
       title: this.reviewData.title,
-      comment: this.reviewData.comment
+      comment: this.reviewData.comment,
     });
 
     this.reviewSubmitted.emit();
@@ -63,7 +65,7 @@ export class ReviewModalComponent {
       userName: '',
       rating: 0,
       title: '',
-      comment: ''
+      comment: '',
     };
     this.submitted = false;
   }

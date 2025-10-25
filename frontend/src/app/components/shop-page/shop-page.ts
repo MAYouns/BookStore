@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Filter, FilterCriteria } from './filter/filter';
-import { BookService } from './services/book.service';
-import { CartService, Book } from './services/cart.service';
-import { FavoritesService } from './services/favorite.service';
-import { Card } from "./card/card";
+import { BookService } from '../../services/book.service';
+import { CartService, Book } from '../../services/cart.service';
+import { FavoritesService } from '../../services/favorite.service';
+import { Card } from './card/card';
 
 export type { Book };
 
@@ -14,14 +14,14 @@ export type { Book };
   standalone: true,
   imports: [CommonModule, Filter, HttpClientModule, Card],
   providers: [BookService],
-  templateUrl: './shop-page.html'
+  templateUrl: './shop-page.html',
 })
 export class ShopPage implements OnInit {
   currentFilter: FilterCriteria = {
     searchQuery: '',
     category: '',
     minPrice: null,
-    maxPrice: null
+    maxPrice: null,
   };
 
   books: Book[] = [];
@@ -39,7 +39,7 @@ export class ShopPage implements OnInit {
     this.loadFavorites();
 
     // Subscribe to favorites changes for real-time counter update
-    this.favoritesService.favorites$.subscribe(favorites => {
+    this.favoritesService.favorites$.subscribe((favorites) => {
       this.favoritesCount = favorites.length;
       this.updateBookFavoriteStatus(favorites);
     });
@@ -54,7 +54,7 @@ export class ShopPage implements OnInit {
       },
       error: (error) => {
         console.error('Error loading books:', error);
-      }
+      },
     });
   }
 
@@ -67,15 +67,15 @@ export class ShopPage implements OnInit {
       },
       error: (error) => {
         console.error('Error loading favorites:', error);
-      }
+      },
     });
   }
 
   updateBookFavoriteStatus(favorites: Book[]): void {
-    const favoriteIds = favorites.map(fav => fav._id);
-    this.books = this.books.map(book => ({
+    const favoriteIds = favorites.map((fav) => fav._id);
+    this.books = this.books.map((book) => ({
       ...book,
-      isFavorite: favoriteIds.includes(book._id)
+      isFavorite: favoriteIds.includes(book._id),
     }));
     this.applyFilters();
   }
@@ -90,24 +90,26 @@ export class ShopPage implements OnInit {
 
     if (this.currentFilter.searchQuery && this.currentFilter.searchQuery.trim() !== '') {
       const query = this.currentFilter.searchQuery.toLowerCase();
-      result = result.filter(book =>
-        book.title.toLowerCase().includes(query) ||
-        book.author.toLowerCase().includes(query)
+      result = result.filter(
+        (book) =>
+          book.title.toLowerCase().includes(query) || book.author.toLowerCase().includes(query)
       );
     }
 
-    if (this.currentFilter.category && this.currentFilter.category !== '' && this.currentFilter.category !== 'All') {
-      result = result.filter(book =>
-        book.genre === this.currentFilter.category
-      );
+    if (
+      this.currentFilter.category &&
+      this.currentFilter.category !== '' &&
+      this.currentFilter.category !== 'All'
+    ) {
+      result = result.filter((book) => book.genre === this.currentFilter.category);
     }
 
     if (this.currentFilter.minPrice !== null) {
-      result = result.filter(book => book.price >= this.currentFilter.minPrice!);
+      result = result.filter((book) => book.price >= this.currentFilter.minPrice!);
     }
 
     if (this.currentFilter.maxPrice !== null) {
-      result = result.filter(book => book.price <= this.currentFilter.maxPrice!);
+      result = result.filter((book) => book.price <= this.currentFilter.maxPrice!);
     }
 
     this.filteredBooks = result;
@@ -122,7 +124,7 @@ export class ShopPage implements OnInit {
   onToggleFavorite(book: Book): void {
     // The favorite toggle is now handled in the card component
     // This method just updates the local state
-    const bookToUpdate = this.books.find(b => b._id === book._id);
+    const bookToUpdate = this.books.find((b) => b._id === book._id);
     if (bookToUpdate) {
       bookToUpdate.isFavorite = book.isFavorite;
     }

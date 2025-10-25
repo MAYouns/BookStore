@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartService, Book } from '../shop-page/services/cart.service';
+import { CartService, Book } from '../../services/cart.service';
 import { RouterModule, Router } from '@angular/router';
-import { FavoritesService } from '../shop-page/services/favorite.service';
+import { FavoritesService } from '../../services/favorite.service';
 
 @Component({
   selector: 'app-favourite-book-page',
@@ -22,8 +22,8 @@ export class FavouriteBookPage implements OnInit {
 
   ngOnInit(): void {
     this.favourite.loadFavorites().subscribe({
-      next: (res: any) => this.favoriteBooks = res.favouriteBooks
-    })
+      next: (res: any) => (this.favoriteBooks = res.favouriteBooks),
+    });
   }
 
   loadFavorites(): void {
@@ -35,14 +35,14 @@ export class FavouriteBookPage implements OnInit {
       },
       error: (err) => {
         console.error('Error loading favorites:', err);
-      }
+      },
     });
   }
 
   removeFromFavorites(bookId: string): void {
     this.favourite.remove(bookId);
     // Update local array immediately for better UX
-    this.favoriteBooks = this.favoriteBooks.filter(book => book._id !== bookId);
+    this.favoriteBooks = this.favoriteBooks.filter((book) => book._id !== bookId);
   }
 
   addToCart(book: Book): void {
