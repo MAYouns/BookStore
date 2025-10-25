@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,7 +15,7 @@ export interface Book {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private cartItems = new BehaviorSubject<Book[]>([]);
@@ -23,7 +24,7 @@ export class CartService {
   cartItems$ = this.cartItems.asObservable();
   favoriteItems$ = this.favoriteItems.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const savedCart = localStorage.getItem('cart');
     const savedFavorites = localStorage.getItem('favorites');
 
@@ -36,19 +37,19 @@ export class CartService {
     }
   }
 
-  addToCart(book: Book): void {
-    const currentCart = this.cartItems.value;
-    const existingBook = currentCart.find(item => item._id === book._id);
-
-    if (!existingBook) {
-      const updatedCart = [...currentCart, book];
-      this.cartItems.next(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-    }
+  addToCart(bookId: string) {
+    console.log('ddddd  ');
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    };
+    this.http.post(`http://localhost:3000/api/v1/users/cart/${bookId}`, {}, { headers }).subscribe({
+      next: (data) => console.log(data),
+      error: (err) => console.log(err),
+    });
   }
 
   removeFromCart(bookId: string): void {
-    const updatedCart = this.cartItems.value.filter(item => item._id !== bookId);
+    const updatedCart = this.cartItems.value.filter((item) => item._id !== bookId);
     this.cartItems.next(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   }
@@ -67,12 +68,12 @@ export class CartService {
   }
 
   isInCart(bookId: string): boolean {
-    return this.cartItems.value.some(item => item._id === bookId);
+    return this.cartItems.value.some((item) => item._id === bookId);
   }
 
   addToFavorites(book: Book): void {
     const currentFavorites = this.favoriteItems.value;
-    const existingBook = currentFavorites.find(item => item._id === book._id);
+    const existingBook = currentFavorites.find((item) => item._id === book._id);
 
     if (!existingBook) {
       const updatedFavorites = [...currentFavorites, { ...book, isFavorite: true }];
@@ -82,7 +83,7 @@ export class CartService {
   }
 
   removeFromFavorites(bookId: string): void {
-    const updatedFavorites = this.favoriteItems.value.filter(item => item._id !== bookId);
+    const updatedFavorites = this.favoriteItems.value.filter((item) => item._id !== bookId);
     this.favoriteItems.next(updatedFavorites);
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   }
@@ -96,7 +97,7 @@ export class CartService {
   }
 
   isFavorite(bookId: string): boolean {
-    return this.favoriteItems.value.some(item => item._id === bookId);
+    return this.favoriteItems.value.some((item) => item._id === bookId);
   }
 
   toggleFavorite(book: Book): void {

@@ -117,8 +117,8 @@ export class ShopPage implements OnInit {
   }
 
   onAddToCart(book: Book): void {
-    this.cartService.addToCart(book);
-    console.log('Added to cart:', book);
+    this.cartService.addToCart(book._id);
+    console.log('Added to cart:', book._id);
   }
 
   onToggleFavorite(book: Book): void {

@@ -18,6 +18,7 @@ export class Card {
   constructor(private router: Router, private favoritesService: FavoritesService) {}
 
   onAddToCart(): void {
+    console.log(this.book);
     this.addToCart.emit(this.book);
   }
 

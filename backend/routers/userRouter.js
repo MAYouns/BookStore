@@ -33,14 +33,14 @@ router.patch("/:id/role", checkIsAdmin, async (req, res) => {
 
 // clear all cart items
 router.delete('/cart', async (req, res) => {
-    try {
-        const userId = req.currentUser.id;
-        const updated = await userService.clearCart(userId);
-        res.send(updated);
-    } catch (error) {
-        console.error('Error clearing cart:', error);
-        res.status(500).send({ message: 'Failed to clear cart' });
-    }
+  try {
+    const userId = req.currentUser.id;
+    const updated = await userService.clearCart(userId);
+    res.send(updated);
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    res.status(500).send({ message: 'Failed to clear cart' });
+  }
 });
 
 // delete

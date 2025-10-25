@@ -46,7 +46,7 @@ export class FavouriteBookPage implements OnInit {
   }
 
   addToCart(book: Book): void {
-    this.cartService.addToCart(book);
+    this.cartService.addToCart(book._id);
   }
 
   goToDetails(bookId: string): void {
