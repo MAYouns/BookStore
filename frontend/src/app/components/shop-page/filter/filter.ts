@@ -23,17 +23,17 @@ export class Filter {
 
   categories = [
     'All',
-    'Mystery',
-    'Adventure',
-    'Historical Fiction',
-    'Fantasy',
-    'Science Fiction',
-    'Romance',
-    'Tech Thriller',
-    'Lifestyle',
+    'Classic',
+    'Fiction',
     'Thriller',
-    'Cultural Fiction',
-    'Business / Technology'
+    'Horror',
+    'Technology',
+    'Psychology',
+    'Entrepreneurship',
+    'Finance',
+    'Leadership',
+    'Science',
+    'History'
   ];
 
   @Output() filterChange = new EventEmitter<FilterCriteria>();

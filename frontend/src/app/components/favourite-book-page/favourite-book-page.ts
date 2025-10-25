@@ -21,7 +21,9 @@ export class FavouriteBookPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadFavorites();
+    this.favourite.loadFavorites().subscribe({
+      next: (res: any) => this.favoriteBooks = res.favouriteBooks
+    })
   }
 
   loadFavorites(): void {
