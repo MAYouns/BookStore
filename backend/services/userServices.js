@@ -48,6 +48,11 @@ const removeFromCart = async (userId, bookId) => {
     return mapUser(dbUser);
 };
 
+const clearCart = async (userId) => {
+    const dbUser = await repo.clearCart(userId);
+    return mapUser(dbUser);
+};
+
 const getUserFavourites = async (userId) => {
     const dbUser = await repo.getFavourites(userId);
     return {
@@ -88,6 +93,7 @@ module.exports = {
     getUserCart,
     addToCart,
     removeFromCart,
+    clearCart,
     getUserFavourites,
     addFavourite,
     removeFavourite
