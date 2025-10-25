@@ -15,7 +15,7 @@ import { initFlowbite } from 'flowbite';
 export class App {
   protected readonly title = signal('frontend');
   navbar = true;
-  pages = ['/', '/home', '/shop', '/bookDetails', '/cart', '/about', '/favouriteBooks'];
+  pages = ['/', '/home', '/shop', '/book', '/cart', '/about', '/favourite'];
 
   constructor(private router: Router) {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {

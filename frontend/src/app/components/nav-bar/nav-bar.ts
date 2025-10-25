@@ -9,7 +9,7 @@ import { initFlowbite } from 'flowbite';
 })
 export class NavBar {
   isLogin = localStorage['token'];
-  list = ['Home', 'Shop', 'About'];
+  list = ['Home', 'shop', 'About'];
   userList = ['Dashboard', 'Sign out'];
   name = localStorage.getItem('username');
   email = localStorage.getItem('email');

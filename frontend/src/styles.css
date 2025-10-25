@@ -7,6 +7,10 @@
 
 /* Write your global style here */
 
+@theme{
+  --color-darkAmber: #CC9600;
+}
+
 :root {
   --primary-color: #cc9600;
   --primary-dark-color: #ca891d;
@@ -51,4 +55,8 @@ body {
 .bona-nova-regular-italic {
   font-weight: 400;
   font-style: italic;
+}
+
+@theme{
+  --color-amber: #CC9600
 }

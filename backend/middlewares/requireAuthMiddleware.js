@@ -7,7 +7,7 @@ const requireAuthMiddleware = async (req, res, next) => {
 
   if (!authHeader) return res.status(401).send({ message: "Missing access token." })
   const token = authHeader.substring(7);
-
+console.log(token);
   try {
     const results = await authService.verifyToken(token);
     console.log("User authenticated:", results);

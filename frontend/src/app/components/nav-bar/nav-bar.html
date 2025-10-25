@@ -31,7 +31,7 @@
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
                     <li><a routerLink='/dashboard' class={{linkStyleUser}}>dashboard</a></li>
-                    <li><a routerLink='/favouriteBooks' class={{linkStyleUser}}>favourite Books</a></li>
+                    <li><a routerLink='/favourite' class={{linkStyleUser}}>favourite Books</a></li>
                     <li><a routerLink='/home' class={{linkStyleUser}} (click)="signOut()">signOut</a></li>
                 </ul>
             </div>
@@ -50,12 +50,12 @@
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
             <ul
                 class="flex flex-col font-medium p-4 md:p-0 mt-4  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                @for (item of list; track $index) {
-                <li><a routerLink={{item.toLowerCase()}} class={{linkStyle}} (click)="toggleMenu()">{{item}}</a></li>
-                }
+                <li><a routerLink="/" class={{linkStyle}} (click)="toggleMenu()">Home</a></li>
+                <li><a routerLink="/shop" class={{linkStyle}} (click)="toggleMenu()">Shop</a></li>
+                <li><a routerLink="/about" class={{linkStyle}} (click)="toggleMenu()">About</a></li>
                 <li>
                     <a routerLink="cart" class={{linkStyle}} (click)="toggleMenu()">
-                        cart <span class="primary-color font-bold ">0</span>
+                        cart
                     </a>
                 </li>
             </ul>
