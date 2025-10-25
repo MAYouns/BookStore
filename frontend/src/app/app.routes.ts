@@ -7,6 +7,7 @@ import { AboutPage } from './components/about-page/about-page';
 import { FavouriteBookPage } from './components/favourite-book-page/favourite-book-page';
 import { LoginPage } from './components/login-page/login-page';
 import { RegisterPage } from './components/register-page/register-page';
+import { DashboardComponent } from './components/dashboard/dashboard';
 import { NotFound } from './components/not-found/not-found';
 import { SuccessPage } from './components/success-page/success-page';
 import { CancelPage } from './components/cancel-page/cancel-page';
@@ -23,5 +24,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterPage },
   { path: 'success', component: SuccessPage },
   { path: 'cancel', component: CancelPage },
+  { path: 'dashboard', component: DashboardComponent },
   { path: '**', component: NotFound },
 ];
