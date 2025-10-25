@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 interface Book {
   _id: string;
@@ -12,12 +13,12 @@ interface Book {
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home-page.html',
-  styleUrls: ['./home-page.css']
+  styleUrls: ['./home-page.css'],
 })
 export class HomePage implements OnInit {
-  heroImage = '/assets/home-hero.png'; 
+  heroImage = '/assets/home-hero.png';
   bestPicks: Book[] = [];
   bookSlides: Book[][] = [];
   shelfImage = '/assets/bookshelf.png';
@@ -27,17 +28,16 @@ export class HomePage implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<Book[]>('http://localhost:3000/api/v1/books')
-      .subscribe({
-        next: (books) => {
-          console.log('Received books:', books);
-          this.bestPicks = books.slice(0, 12);
-          this.bookSlides = this.groupIntoSlides(this.bestPicks, 4);
-        },
-        error: (error) => {
-          console.error('Error fetching books:', error);
-        }
-      });
+    this.http.get<Book[]>('http://localhost:3000/api/v1/books').subscribe({
+      next: (books) => {
+        console.log('Received books:', books);
+        this.bestPicks = books.slice(0, 12);
+        this.bookSlides = this.groupIntoSlides(this.bestPicks, 4);
+      },
+      error: (error) => {
+        console.error('Error fetching books:', error);
+      },
+    });
   }
 
   groupIntoSlides(books: Book[], booksPerSlide: number): Book[][] {
