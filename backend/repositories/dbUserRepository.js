@@ -48,6 +48,14 @@ const getFavourites = async (userId) => {
     return await UserModel.findById(userId).populate('favouriteBooks');
 };
 
+const clearCart = async (userId) => {
+  return await UserModel.findByIdAndUpdate(
+    userId,
+    { $set: { cart: [] } },
+    { new: true }
+  ).populate('cart');
+};
+
 const addFavourite = async (userId, bookId) => {
     return await UserModel.findByIdAndUpdate(
         userId,
@@ -75,6 +83,7 @@ module.exports = {
     getCart,
     addToCart,
     removeFromCart,
+    clearCart,
     getFavourites,
     addFavourite,
     removeFavourite
