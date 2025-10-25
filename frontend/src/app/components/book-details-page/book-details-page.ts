@@ -64,7 +64,7 @@ export class BookDetailsPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
 
     if (!id) {
       this.error = 'Invalid book ID';
@@ -75,7 +75,7 @@ export class BookDetailsPage implements OnInit {
     this.bookService.getBooks().subscribe({
       next: (books) => {
         const booksArray = Array.isArray(books) ? books : books['books'];
-        this.book = booksArray.find(b => +b.id === +id);
+        this.book = booksArray.find(b => b._id === id);
 
         if (!this.book) {
           this.error = 'Book not found';
@@ -98,10 +98,12 @@ export class BookDetailsPage implements OnInit {
     });
   }
 
+
   loadReviews(): void {
+    console.log(this.book?.title)
     if (!this.book) return;
 
-    this.userReviews = this.reviewService.getReviewsByBookId(this.book.id);
+    this.userReviews = this.reviewService.getReviewsByBookId(this.book._id);
     this.totalReviews = this.userReviews.length + this.defaultReviews.length;
 
     const userRatingsSum = this.userReviews.reduce((sum, r) => sum + r.rating, 0);

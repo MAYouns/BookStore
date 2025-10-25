@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface Review {
   id: string;
-  bookId: number;
+  bookId: string;
   userName: string;
   userInitials: string;
   rating: number;
@@ -47,11 +47,11 @@ export class ReviewService {
     localStorage.setItem('reviews', JSON.stringify(updatedReviews));
   }
 
-  getReviewsByBookId(bookId: number): Review[] {
+  getReviewsByBookId(bookId: string): Review[] {
     return this.reviews.value.filter(review => review.bookId === bookId);
   }
 
-  getAverageRating(bookId: number): number {
+  getAverageRating(bookId: string): number {
     const bookReviews = this.getReviewsByBookId(bookId);
     if (bookReviews.length === 0) return 0;
 
@@ -59,7 +59,7 @@ export class ReviewService {
     return Math.round((sum / bookReviews.length) * 10) / 10;
   }
 
-  getReviewCount(bookId: number): number {
+  getReviewCount(bookId: string): number {
     return this.getReviewsByBookId(bookId).length;
   }
 

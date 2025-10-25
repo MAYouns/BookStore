@@ -34,7 +34,7 @@ export class CartPage implements OnInit {
     this.totalPrice = this.cartItems.reduce((sum, book) => sum + book.price, 0);
   }
 
-  removeFromCart(bookId: number): void {
+  removeFromCart(bookId: string): void {
     this.cartService.removeFromCart(bookId);
   }
 

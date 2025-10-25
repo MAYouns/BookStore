@@ -21,12 +21,12 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <div *ngFor="let book of favoriteBooks" class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
 
-          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 cursor-pointer" (click)="goToDetails(book.id)">
-            <img [src]="book.image" [alt]="book.title" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+          <div class="relative h-64 overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 cursor-pointer" (click)="goToDetails(book._id)">
+            <img [src]="book.bookCoverImage" [alt]="book.title" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
 
             <div class="absolute top-3 right-3">
               <button
-                (click)="removeFromFavorites(book.id); $event.stopPropagation()"
+                (click)="removeFromFavorites(book._id); $event.stopPropagation()"
                 class="bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-200"
               >
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@
           <div class="p-5 space-y-3">
             <h3
               class="text-xl font-bold text-gray-900 line-clamp-2 cursor-pointer hover:text-amber-600 transition-colors duration-200"
-              (click)="goToDetails(book.id)"
+              (click)="goToDetails(book._id)"
             >
               {{ book.title }}
             </h3>
@@ -47,7 +47,7 @@
             <p class="text-sm text-gray-600 font-medium">{{ book.author }}</p>
 
             <div class="flex items-center gap-1">
-              <span *ngFor="let star of [1,2,3,4,5]" class="text-amber-400 text-sm">★</span>
+              <span *ngFor="let star of [1,2,3,4,5]" class="text-amber-400 text-sm">â˜…</span>
             </div>
 
             <div class="pt-2 border-t border-gray-200">

@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Filter, FilterCriteria } from './filter/filter';
-import { Card } from './card/card';
 import { BookService } from './services/book.service';
 import { CartService, Book } from './services/cart.service';
+import { FavoritesService } from './services/favorite.service';
+import { Card } from "./card/card";
 
 export type { Book };
 
 @Component({
   selector: 'app-shop-page',
   standalone: true,
-  imports: [CommonModule, Filter, Card, HttpClientModule],
+  imports: [CommonModule, Filter, HttpClientModule, Card],
   providers: [BookService],
   templateUrl: './shop-page.html'
 })
@@ -29,15 +30,18 @@ export class ShopPage implements OnInit {
 
   constructor(
     private bookService: BookService,
-    private cartService: CartService
+    private cartService: CartService,
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit(): void {
     this.loadBooks();
+    this.loadFavorites();
 
-    this.cartService.favoriteItems$.subscribe(favorites => {
+    // Subscribe to favorites changes for real-time counter update
+    this.favoritesService.favorites$.subscribe(favorites => {
       this.favoritesCount = favorites.length;
-      this.updateBookFavoriteStatus();
+      this.updateBookFavoriteStatus(favorites);
     });
   }
 
@@ -45,10 +49,7 @@ export class ShopPage implements OnInit {
     this.bookService.getBooks().subscribe({
       next: (data) => {
         console.log('Loaded books:', data);
-        this.books = data.map(book => ({
-          ...book,
-          isFavorite: this.cartService.isFavorite(book.id)
-        }));
+        this.books = data;
         this.applyFilters();
       },
       error: (error) => {
@@ -57,10 +58,24 @@ export class ShopPage implements OnInit {
     });
   }
 
-  updateBookFavoriteStatus(): void {
+  loadFavorites(): void {
+    this.favoritesService.loadFavorites().subscribe({
+      next: (response: any) => {
+        const favorites = response.favouriteBook || response.data || response;
+        this.favoritesCount = favorites.length;
+        this.updateBookFavoriteStatus(favorites);
+      },
+      error: (error) => {
+        console.error('Error loading favorites:', error);
+      }
+    });
+  }
+
+  updateBookFavoriteStatus(favorites: Book[]): void {
+    const favoriteIds = favorites.map(fav => fav._id);
     this.books = this.books.map(book => ({
       ...book,
-      isFavorite: this.cartService.isFavorite(book.id)
+      isFavorite: favoriteIds.includes(book._id)
     }));
     this.applyFilters();
   }
@@ -105,10 +120,12 @@ export class ShopPage implements OnInit {
   }
 
   onToggleFavorite(book: Book): void {
-    this.cartService.toggleFavorite(book);
-    const bookToUpdate = this.books.find(b => b.id === book.id);
+    // The favorite toggle is now handled in the card component
+    // This method just updates the local state
+    const bookToUpdate = this.books.find(b => b._id === book._id);
     if (bookToUpdate) {
-      bookToUpdate.isFavorite = this.cartService.isFavorite(book.id);
+      bookToUpdate.isFavorite = book.isFavorite;
     }
+    this.applyFilters();
   }
 }

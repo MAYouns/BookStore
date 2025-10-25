@@ -1,30 +1,3 @@
-// import { Component, Output, EventEmitter } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-filter',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule],
-//   templateUrl: './filter.html'
-// })
-// export class Filter {
-//   searchQuery = '';
-
-//   @Output() filterChange = new EventEmitter<string>();
-
-//   onSearch(query: string): void {
-//     this.searchQuery = query;
-//     this.filterChange.emit(query);
-//   }
-// }
-
-
-
-
-
-
-
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

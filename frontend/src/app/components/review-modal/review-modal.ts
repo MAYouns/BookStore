@@ -11,7 +11,7 @@ import { ReviewService } from '../shop-page/services/review.service';
 })
 export class ReviewModalComponent {
   @Input() isOpen = false;
-  @Input() bookId!: number;
+  @Input() bookId!: string;
   @Output() close = new EventEmitter<void>();
   @Output() reviewSubmitted = new EventEmitter<void>();
 
