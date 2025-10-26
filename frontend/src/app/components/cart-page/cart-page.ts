@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 import { loadStripe } from '@stripe/stripe-js';
+import { CartService } from '../../services/cart.service';
 
 interface Book {
   id: string;
@@ -32,6 +33,7 @@ interface CheckoutDetails {
   styleUrl: './cart-page.css',
 })
 export class CartPage implements OnInit {
+  constructor(private cartService: CartService) {}
   private http = inject(HttpClient);
 
   cartItems = signal<Book[]>([]);
@@ -98,7 +100,7 @@ export class CartPage implements OnInit {
     );
   }
 
-  private removeBookFromCart(book: Book): void {
+  removeBookFromCart(book: Book): void {
     this.cartItems.update((items) => items.filter((it) => it !== book));
 
     const id = book.id;
@@ -108,7 +110,10 @@ export class CartPage implements OnInit {
     const url = `${this.cartApiUrl}/${id}`;
 
     this.http.delete(url, { headers }).subscribe({
-      next: () => console.log(`Deleted cart item ${id} from server`),
+      next: () => {
+        console.log(`Deleted cart item ${id} from server`);
+        this.cartService.loadCart();
+      },
       error: (err) => console.error(`Failed to delete cart item ${id}:`, err),
     });
   }

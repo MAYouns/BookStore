@@ -50,6 +50,6 @@ export class FavouriteBookPage implements OnInit {
   }
 
   goToDetails(bookId: string): void {
-    this.router.navigate(['/shop', bookId]);
+    this.router.navigate(['/books', bookId]);
   }
 }

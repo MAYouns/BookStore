@@ -1,5 +1,5 @@
 import { Component, computed } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { CartService } from '../../services/cart.service';
 import { FavoritesService } from '../../services/favorite.service';
@@ -9,7 +9,11 @@ import { FavoritesService } from '../../services/favorite.service';
   templateUrl: './nav-bar.html',
 })
 export class NavBar {
-  constructor(private cartService: CartService, private favouriteService: FavoritesService) {}
+  constructor(
+    private cartService: CartService,
+    private favouriteService: FavoritesService,
+    private router: Router
+  ) {}
   isLogin = localStorage['token'];
   isAdmin = localStorage['role'] === 'admin';
   list = ['Home', 'shop', 'About'];
@@ -26,7 +30,7 @@ export class NavBar {
   favoriteCount = computed(() => this.favouriteService.favourite().length);
   ngOnInit(): void {
     this.cartService.loadCart();
-    console.log(this.favoriteCount)
+    console.log(this.favoriteCount);
   }
   ngAfterViewInit(): void {
     initFlowbite();
@@ -37,7 +41,8 @@ export class NavBar {
     localStorage.removeItem('username');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
-    window.location.reload();
+    this.router.navigate(['/home']);
+    location.reload();
   }
   toggleMenu() {
     const toggleBtn = document.querySelector('[data-collapse-toggle="navbar-user"]') as HTMLElement;
