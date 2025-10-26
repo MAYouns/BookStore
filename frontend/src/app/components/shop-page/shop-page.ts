@@ -36,8 +36,10 @@ export class ShopPage implements OnInit {
 
   ngOnInit(): void {
     this.loadBooks();
-    this.loadFavorites();
+    this.favoritesService.loadFavorites();
+    this.favoritesCount = this.favoritesService.favourite().length;
 
+    this.updateBookFavoriteStatus(this.favoritesService.favourite());
     // Subscribe to favorites changes for real-time counter update
     this.favoritesService.favorites$.subscribe((favorites) => {
       this.favoritesCount = favorites.length;
@@ -59,16 +61,7 @@ export class ShopPage implements OnInit {
   }
 
   loadFavorites(): void {
-    this.favoritesService.loadFavorites().subscribe({
-      next: (response: any) => {
-        const favorites = response.favouriteBook || response.data || response;
-        this.favoritesCount = favorites.length;
-        this.updateBookFavoriteStatus(favorites);
-      },
-      error: (error) => {
-        console.error('Error loading favorites:', error);
-      },
-    });
+    this.favoritesService.loadFavorites();
   }
 
   updateBookFavoriteStatus(favorites: Book[]): void {

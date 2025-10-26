@@ -30,8 +30,9 @@
                     <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{email}}</span>
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
+                    @if(isAdmin){
                     <li><a routerLink='/dashboard' class={{linkStyleUser}}>dashboard</a></li>
-                    <li><a routerLink='/favourite' class={{linkStyleUser}}>favourite Books</a></li>
+                    }
                     <li><a routerLink='/home' class={{linkStyleUser}} (click)="signOut()">signOut</a></li>
                 </ul>
             </div>
@@ -53,11 +54,32 @@
                 <li><a routerLink="/" class={{linkStyle}} (click)="toggleMenu()">Home</a></li>
                 <li><a routerLink="/shop" class={{linkStyle}} (click)="toggleMenu()">Shop</a></li>
                 <li><a routerLink="/about" class={{linkStyle}} (click)="toggleMenu()">About</a></li>
-                <li>
-                    <a routerLink="cart" class={{linkStyle}} (click)="toggleMenu()">
-                        cart
+                @if(isLogin) {
+                <li class="relative">
+                    <a routerLink="/cart" class="{{ linkStyle }}" (click)="toggleMenu()">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <!-- Badge -->
+                        @if(cartCount()>0) {
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5
+                            py-0.5">
+                            {{ cartCount() }}
+                        </span>
+                        }
                     </a>
                 </li>
+                <li class="relative">
+                    <a routerLink="/favourite" class="{{ linkStyle }}" (click)="toggleMenu()">
+                        <i class="fa-solid fa-heart text-2xl"></i>
+                        @if(favoriteCount()>0) {
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5
+                            py-0.5">
+                            {{ favoriteCount() }}
+                        </span>
+                        }
+                    </a>
+                </li>
+                }
+
             </ul>
         </div>
     </div>

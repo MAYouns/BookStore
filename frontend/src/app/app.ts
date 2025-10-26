@@ -15,14 +15,20 @@ import { initFlowbite } from 'flowbite';
 export class App {
   protected readonly title = signal('frontend');
   navbar = true;
-  pages = ['/', '/home', '/shop', '/book', '/cart', '/about', '/favourite'];
+  pages = ['/', '/home', '/shop', '/cart', '/about', '/favourite', '/books/:id'];
 
   constructor(private router: Router) {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {
-      console.log(e.url);
-      this.navbar = !this.pages.includes(e.url) ? false : true;
+      this.navbar = this.pages.some((page) => {
+        if (page.includes(':')) {
+          const base = page.split('/:')[0];
+          return e.url.startsWith(base);
+        }
+        return e.url === page;
+      });
     });
   }
+
   ngOnInit(): void {
     initFlowbite();
   }

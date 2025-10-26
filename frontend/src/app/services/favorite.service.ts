@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Book } from '../services/cart.service';
@@ -12,27 +12,30 @@ export class FavoritesService {
 
   constructor(private http: HttpClient) {}
 
+  favourite = signal<any[]>([]);
+
   /** Load favorites from backend */
   loadFavorites() {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
+    this.http.get<any>(`${this.baseUrl}`, { headers }).subscribe({
+      next: (res: any) => {
+        this.favourite.set(res.favouriteBooks || []);
+        console.log(this.favourite());
+      },
+    });
     return this.http.get<any>(`${this.baseUrl}`, { headers });
   }
 
-  /** Add book to favorites */
   add(bookId: string) {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
     this.http.post<any>(`${this.baseUrl}/${bookId}`, {}, { headers }).subscribe({
-      next: (response) => {
-        console.log('Add favorite response:', response);
-        // Update the BehaviorSubject if needed
-        const updated = response.favouriteBook || response.data || response;
-        if (Array.isArray(updated)) {
-          this._favorites.next(updated);
-        }
+      next: (data) => {
+        console.log(data);
+        this.loadFavorites();
       },
       error: (err) => console.error('Failed to add favorite', err),
     });
@@ -45,6 +48,7 @@ export class FavoritesService {
     };
     this.http.delete<any>(`${this.baseUrl}/${bookId}`, { headers }).subscribe({
       next: (response) => {
+        this.loadFavorites()
         console.log('Remove favorite response:', response);
         // Update the BehaviorSubject if needed
         const updated = response.favouriteBook || response.data || response;

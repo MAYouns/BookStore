@@ -14,6 +14,7 @@ export class Card {
   @Input() book!: Book;
   @Output() addToCart = new EventEmitter<Book>();
   @Output() toggleFavorite = new EventEmitter<Book>();
+  isLogin = localStorage['token'];
 
   constructor(private router: Router, private favoritesService: FavoritesService) {}
 
@@ -38,5 +39,8 @@ export class Card {
 
   goToDetails(): void {
     this.router.navigate(['/books', this.book._id]);
+  }
+  gotoLogin() {
+    this.router.navigate(['/login']);
   }
 }
