@@ -29,7 +29,7 @@ export class NavBar {
   cartCount = computed(() => this.cartService.cart().length);
   favoriteCount = computed(() => this.favouriteService.favourite().length);
   ngOnInit(): void {
-    this.cartService.loadCart();
+    if (this.isLogin) this.cartService.loadCart();
     console.log(this.favoriteCount);
   }
   ngAfterViewInit(): void {
