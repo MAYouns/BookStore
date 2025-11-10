@@ -1,4 +1,4 @@
-process.loadEnvFile();
+// process.loadEnvFile();
 
 const PORT = process.env.PORT || 3000;
 const PREFIX = process.env.PREFIX;
