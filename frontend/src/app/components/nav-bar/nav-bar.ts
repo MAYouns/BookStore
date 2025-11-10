@@ -37,7 +37,7 @@ export class NavBar {
     localStorage.removeItem('username');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
-    location.href = '/home';
+    location.href = '/';
   }
   toggleMenu() {
     const toggleBtn = document.querySelector('[data-collapse-toggle="navbar-user"]') as HTMLElement;

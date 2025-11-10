@@ -21,8 +21,8 @@ router.post('/create-checkout-session', async (req, res) => {
                 },
                 quantity: p.quantity,
             })),
-            success_url: 'http://localhost:4200/success',
-            cancel_url: 'http://localhost:4200/cancel',
+            success_url: 'https://singular-stroopwafel-45822f.netlify.app/success',
+            cancel_url: 'https://singular-stroopwafel-45822f.netlify.app/cancel',
         });
 
         res.json({ url: session.url });
