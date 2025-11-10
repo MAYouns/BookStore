@@ -8,6 +8,7 @@
 /frontend/out-tsc/
 /frontend/.angular/cache/
 
+    
 # Logs
 *.log
 npm-debug.log*
