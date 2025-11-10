@@ -2,10 +2,11 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Book } from '../services/cart.service';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class FavoritesService {
-  private apiUrl = 'http://localhost:3000/api/v1';
+  private apiUrl = `${environment.apiUrl}/api/v1`;
   private baseUrl = `${this.apiUrl}/users/favourite`;
   private _favorites = new BehaviorSubject<Book[]>([]);
   favorites$ = this._favorites.asObservable();

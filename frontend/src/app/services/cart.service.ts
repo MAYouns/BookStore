@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 export interface Book {
   _id: string;
@@ -32,7 +33,7 @@ export class CartService {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
 
-    this.http.get<any>('http://localhost:3000/api/v1/users/cart', { headers }).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/api/v1/users/cart`, { headers }).subscribe({
       next: (data) => {
         this.cart.set(data.cart || []);
         this.cartItems.next(data.cart || []);
@@ -45,7 +46,7 @@ export class CartService {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
-    this.http.post(`http://localhost:3000/api/v1/users/cart/${bookId}`, {}, { headers }).subscribe({
+    this.http.post(`${environment.apiUrl}/api/v1/users/cart/${bookId}`, {}, { headers }).subscribe({
       next: (data) => {
         console.log(data);
         this.loadCart();

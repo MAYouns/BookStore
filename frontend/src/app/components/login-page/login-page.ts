@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { GoogleAuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
 
 import {
   FormControl,
@@ -54,7 +55,7 @@ export class LoginPage {
       email: email.value,
       password: password.value,
     };
-    this.http.post('http://localhost:3000/api/v1/auth/login', this.data).subscribe({
+    this.http.post(`${environment.apiUrl}/api/v1/auth/login`, this.data).subscribe({
       next: (res: any) => {
         localStorage.setItem('token', res.authToken);
         localStorage.setItem('userId', res.id);

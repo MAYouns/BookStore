@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 import { loadStripe } from '@stripe/stripe-js';
 import { CartService } from '../../services/cart.service';
+import { environment } from '../../../environments/environment.prod';
 
 interface Book {
   id: string;
@@ -38,7 +39,7 @@ export class CartPage implements OnInit {
 
   cartItems = signal<Book[]>([]);
 
-  private cartApiUrl = 'http://localhost:3000/api/v1/users/cart';
+  private cartApiUrl = `${environment.apiUrl}/api/v1/users/cart`;
 
   showCheckoutModal = signal(false);
   notification = signal<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -176,7 +177,7 @@ export class CartPage implements OnInit {
       }));
 
       const session = await this.http
-        .post<{ url: string }>('http://localhost:3000/api/v1/stripe/create-checkout-session', {
+        .post<{ url: string }>(`${environment.apiUrl}/api/v1/stripe/create-checkout-session`, {
           products,
         })
         .toPromise();

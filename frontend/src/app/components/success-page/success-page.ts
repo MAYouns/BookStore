@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-success',
@@ -23,7 +24,7 @@ export class SuccessPage {
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
-      const url = 'http://localhost:3000/api/v1/users/cart';
+      const url = `${environment.apiUrl}/api/v1/users/cart`;
       lastValueFrom(this.http.delete(url, { headers }));
       console.log('Cleared user cart after successful checkout.');
     } catch (err) {

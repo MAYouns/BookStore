@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
 
 interface Book {
   _id: string;
@@ -39,7 +40,7 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<Book[]>('http://localhost:3000/api/v1/books').subscribe({
+    this.http.get<Book[]>(`${environment.apiUrl}/api/v1/books`).subscribe({
       next: (books) => {
         console.log('Received books:', books);
         this.recommendedBooks = books.slice(0, 5);

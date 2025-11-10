@@ -3,6 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment.prod';
 
 declare const google: any;
 
@@ -13,11 +14,11 @@ export class GoogleAuthService {
   constructor(private ngZone: NgZone, private http: HttpClient, private router: Router) {}
 
   register(userData: any) {
-    return this.http.post('http://localhost:3000/api/v1/auth/register', userData);
+    return this.http.post(`${environment.apiUrl}/api/v1/auth/register`, userData);
   }
 
   login(userData: any) {
-    return this.http.post('http://localhost:3000/api/v1/auth/login', userData);
+    return this.http.post(`${environment.apiUrl}/api/v1/auth/login`, userData);
   }
 
   initializeButton() {
@@ -47,16 +48,16 @@ export class GoogleAuthService {
         email: decoded.email,
         password: decoded.sub,
       };
-      this.http.post('http://localhost:3000/api/v1/auth/login', data).subscribe({
+      this.http.post(`${environment.apiUrl}/api/v1/auth/login`, data).subscribe({
         next: (res: any) => {
           this.loginAfterRegister(res);
         },
         error: (err) => {
           console.log(err);
-          this.http.post('http://localhost:3000/api/v1/auth/register', data).subscribe({
+          this.http.post(`${environment.apiUrl}/api/v1/auth/register`, data).subscribe({
             next: (res: any) => {
               console.log('done');
-              this.http.post('http://localhost:3000/api/v1/auth/login', data).subscribe({
+              this.http.post(`${environment.apiUrl}/api/v1/auth/login`, data).subscribe({
                 next: (res: any) => {
                   this.loginAfterRegister(res);
                 },
