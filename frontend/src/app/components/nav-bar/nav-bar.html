@@ -1,7 +1,7 @@
 <nav class="text-white fixed top-0 left-0 w-full z-50 bg-white rounded-b-md shadow-2xl"
     [style.backgroundImage]="'url(/images/navBar.png)'" style="background-size: cover;">
     <div class="flex flex-wrap items-center justify-between mx-auto py-2">
-        <div class="logo flex items-center primary-color ml-9 space-x-2">
+        <div class="logo flex items-center primary-color space-x-2">
             <img routerLink="home" src="/images/logo.png" alt="" width="80" class="cursor-pointer">
             <p class="text-3xl">Papy<span class="text-amber-700">rus</span></p>
         </div>
@@ -11,7 +11,7 @@
             <div class="space-x-4">
                 <button><a routerLink="login" class="bg-[var(--secondary-color)] p-3 rounded text-sm">Login</a></button>
                 <button><a routerLink="register"
-                        class="bg-[var(--secondary-color)] p-3 rounded text-sm">Register</a></button>
+                        class="bg-[var(--secondary-color)] p-3 rounded text-sm hidden sm:block">Register</a></button>
             </div>
             } @else {
             <div class="space-y-2 flex items-center space-x-3">
