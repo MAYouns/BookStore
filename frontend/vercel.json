@@ -1,6 +1,7 @@
 {
-  "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/book-store",
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/frontend/browser",
+  "framework": null,
   "routes": [
     {
       "src": "/(.*)",
