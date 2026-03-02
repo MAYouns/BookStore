@@ -1,11 +1,8 @@
 {
-  "buildCommand": "ng build",
+  "buildCommand": "ng build --configuration production",
   "outputDirectory": "dist/frontend/browser",
   "framework": null,
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
