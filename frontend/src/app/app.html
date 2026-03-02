@@ -1,7 +1,20 @@
+<!-- Top Progress Bar -->
+<div 
+  class="top-progress-bar" 
+  [style.width.%]="progress"
+  [class.active]="isRouting" 
+  [class.finish]="progressComplete"
+  [style.opacity]="progress > 0 && !progressComplete ? 1 : 0">
+</div>
+
 @if (navbar) {
 <app-nav-bar></app-nav-bar>
-<router-outlet />
+<div [@routeTransition]="router.url" class="min-h-screen relative">
+  <router-outlet />
+</div>
 <app-footer></app-footer>
 } @else {
-<router-outlet />
+<div [@routeTransition]="router.url" class="min-h-screen relative">
+  <router-outlet />
+</div>
 }

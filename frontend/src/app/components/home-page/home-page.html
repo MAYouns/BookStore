@@ -34,41 +34,54 @@
     <section class="max-w-6xl mx-auto px-6 md:px-12 lg:px-20 py-12 bg-white">
       <h2 class="text-center text-3xl md:text-4xl font-semibold mb-8 font-serif">Our Best Picks</h2>
 
-      <div class="relative overflow-hidden">
-        <div class="transition-transform duration-300 ease-in-out"
-          [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
-          <div class="flex">
-            <ng-container *ngFor="let slide of bookSlides">
-              <div class="min-w-full">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-start">
-                  <ng-container *ngFor="let book of slide">
-                    <div class="flex flex-col items-center text-center">
-                      <div class="w-44 h-60 bg-gray-100 rounded-md overflow-hidden shadow-sm">
-                        <img [src]="book.bookCoverImage" [alt]="book.title" class="w-full h-full object-cover" />
+      <!-- Loading Skeleton -->
+      @if (isLoading) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-start">
+          @for (item of [1,2,3,4]; track item) {
+            <div class="flex flex-col items-center text-center animate-pulse">
+              <div class="w-44 h-60 bg-gradient-to-br from-slate-200 to-slate-300 rounded-md shadow-sm"></div>
+              <div class="mt-3 h-4 bg-slate-200 rounded w-28"></div>
+              <div class="mt-2 h-3 bg-slate-200 rounded w-20"></div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="relative overflow-hidden">
+          <div class="transition-transform duration-300 ease-in-out"
+            [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+            <div class="flex">
+              <ng-container *ngFor="let slide of bookSlides">
+                <div class="min-w-full">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-start">
+                    <ng-container *ngFor="let book of slide">
+                      <div class="flex flex-col items-center text-center">
+                        <div class="w-44 h-60 bg-gray-100 rounded-md overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow" (click)="goToDetails(book._id)">
+                          <img [src]="book.bookCoverImage" [alt]="book.title" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                        </div>
+                        <h3 class="mt-3 font-semibold text-sm cursor-pointer hover:text-[#CC9600] transition-colors" (click)="goToDetails(book._id)">{{ book.title }}</h3>
+                        <p class="text-xs text-gray-500">{{ book.author }}</p>
                       </div>
-                      <h3 class="mt-3 font-semibold text-sm">{{ book.title }}</h3>
-                      <p class="text-xs text-gray-500">{{ book.author }}</p>
-                    </div>
-                  </ng-container>
+                    </ng-container>
+                  </div>
                 </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex justify-center items-center gap-3">
+          <button (click)="prevSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">‹</button>
+          <div class="flex gap-2">
+            <ng-container *ngFor="let slide of bookSlides; let i = index">
+              <div class="w-3 h-3 rounded-full cursor-pointer" [class.bg-[#CC9600]]="i === currentSlide"
+                [class.bg-white]="i !== currentSlide" [class.border]="i !== currentSlide"
+                [class.border-gray-300]="i !== currentSlide" (click)="currentSlide = i">
               </div>
             </ng-container>
           </div>
+          <button (click)="nextSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">›</button>
         </div>
-      </div>
-
-      <div class="mt-8 flex justify-center items-center gap-3">
-        <button (click)="prevSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">‹</button>
-        <div class="flex gap-2">
-          <ng-container *ngFor="let slide of bookSlides; let i = index">
-            <div class="w-3 h-3 rounded-full cursor-pointer" [class.bg-[#CC9600]]="i === currentSlide"
-              [class.bg-white]="i !== currentSlide" [class.border]="i !== currentSlide"
-              [class.border-gray-300]="i !== currentSlide" (click)="currentSlide = i">
-            </div>
-          </ng-container>
-        </div>
-        <button (click)="nextSlide()" class="p-2 rounded-full border border-gray-200 hover:bg-gray-100">›</button>
-      </div>
+      }
     </section>
 
     <section class="bg-black text-white py-40">

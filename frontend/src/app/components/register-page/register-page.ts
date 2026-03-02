@@ -24,6 +24,7 @@ export class RegisterPage {
   }
 
   type: string = 'password';
+  isLoading: boolean = false;
   data: object = {};
   myLogForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -49,6 +50,7 @@ export class RegisterPage {
     password: HTMLInputElement,
     email: HTMLInputElement
   ) {
+    this.isLoading = true;
     this.data = {
       name: firstName.value + ' ' + lastName.value,
       email: email.value,
@@ -58,10 +60,12 @@ export class RegisterPage {
     this.googleAuth.register(this.data).subscribe({
       next: (res) => {
         console.log('✅ User registered successfully:', res);
+        this.isLoading = false;
         this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('❌ Registration failed:', err);
+        this.isLoading = false;
       },
     });
   }

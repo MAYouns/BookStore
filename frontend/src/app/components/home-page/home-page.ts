@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { environment } from '../../../environments/environment.prod';
 
 interface Book {
@@ -25,18 +25,20 @@ export class HomePage implements OnInit {
   shelfImage = '/assets/bookshelf.png';
   currentSlide = 0;
   totalSlides = 3;
+  isLoading = true;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.http.get<Book[]>(`${environment.apiUrl}/api/v1/books`).subscribe({
       next: (books) => {
-        console.log('Received books:', books);
         this.bestPicks = books.slice(0, 12);
         this.bookSlides = this.groupIntoSlides(this.bestPicks, 4);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching books:', error);
+        this.isLoading = false;
       },
     });
   }
@@ -55,5 +57,9 @@ export class HomePage implements OnInit {
 
   prevSlide() {
     this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+  }
+
+  goToDetails(id: string) {
+    this.router.navigate(['/books', id]);
   }
 }

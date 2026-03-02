@@ -20,7 +20,8 @@
 }
 
 body {
-  font-family: var(--font-family);
+  padding-top: 75px;
+  font-family: 'Outfit', sans-serif;
 }
 
 .primary-color {
@@ -59,4 +60,31 @@ body {
 
 @theme {
   --color-amber: #cc9600;
+}
+
+/* ===== Angular-Style Routing Progress Bar ===== */
+.top-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #dd0031, #c3002f, #f50057, #ff4081);
+  background-size: 200% 100%;
+  z-index: 99999;
+  transition: width 0.2s ease-out, opacity 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(221, 0, 49, 0.8), 0 0 5px rgba(255, 64, 129, 0.5);
+  pointer-events: none;
+}
+
+.top-progress-bar.active {
+  animation: pulse-angular 1.5s infinite linear;
+}
+
+.top-progress-bar.finish {
+  transition: opacity 0.4s ease-out, width 0.1s;
+}
+
+@keyframes pulse-angular {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }

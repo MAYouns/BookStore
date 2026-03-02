@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Book } from '../../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
 import { FavoritesService } from '../../../services/favorite.service';
 
 @Component({
@@ -12,35 +13,54 @@ import { FavoritesService } from '../../../services/favorite.service';
 })
 export class Card {
   @Input() book!: Book;
-  @Output() addToCart = new EventEmitter<Book>();
-  @Output() toggleFavorite = new EventEmitter<Book>();
+  @Output() addToCart = new EventEmitter<void>();
+  @Output() toggleFavorite = new EventEmitter<void>();
   isLogin = localStorage['token'];
+  isAddingToCart = false;
 
-  constructor(private router: Router, private favoritesService: FavoritesService) {}
+  constructor(
+    private router: Router,
+    private favoritesService: FavoritesService,
+    private cartService: CartService
+  ) {}
 
-  onAddToCart(): void {
-    console.log(this.book);
-    this.addToCart.emit(this.book);
+  onAddToCart(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.isAddingToCart) return;
+    this.isAddingToCart = true;
+    this.cartService.addToCart(this.book._id).subscribe({
+      next: () => {
+        this.isAddingToCart = false;
+      },
+      error: () => {
+        this.isAddingToCart = false;
+      },
+    });
   }
 
-  onToggleFavorite() {
+  onToggleFavorite(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     if (!this.book.isFavorite) {
-      // Add to favorites
       this.favoritesService.add(this.book._id);
-      this.book.isFavorite = true; // Toggle the state
-      console.log('added to favorites');
+      this.book.isFavorite = true;
     } else {
-      // Remove from favorites
       this.favoritesService.remove(this.book._id);
-      this.book.isFavorite = false; // Toggle the state
-      console.log('removed from favorites');
+      this.book.isFavorite = false;
     }
   }
 
   goToDetails(): void {
     this.router.navigate(['/books', this.book._id]);
   }
-  gotoLogin() {
+  gotoLogin(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     this.router.navigate(['/login']);
   }
 }
+

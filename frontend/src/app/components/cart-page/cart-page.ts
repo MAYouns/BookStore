@@ -59,11 +59,15 @@ export class CartPage implements OnInit {
     cardNumber: '',
   });
 
+  isLoading = signal<boolean>(true);
+  isCheckingOut = signal<boolean>(false);
+
   ngOnInit(): void {
     this.fetchCartItems();
   }
 
   fetchCartItems(): void {
+    this.isLoading.set(true);
     const token = localStorage.getItem('token');
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -80,10 +84,12 @@ export class CartPage implements OnInit {
         }));
 
         this.cartItems.set(mapped);
+        this.isLoading.set(false);
       },
       error: (err) => {
         console.error('Failed to load cart items from backend:', err);
         this.cartItems.set([]);
+        this.isLoading.set(false);
       },
     });
   }
@@ -169,6 +175,7 @@ export class CartPage implements OnInit {
       return;
     }
 
+    this.isCheckingOut.set(true);
     try {
       const products = this.cartItems().map((book) => ({
         title: book.title,
@@ -185,9 +192,11 @@ export class CartPage implements OnInit {
       if (session && session.url) {
         window.location.href = session.url;
       } else {
+        this.isCheckingOut.set(false);
         throw new Error('No checkout URL returned from server');
       }
     } catch (error: any) {
+      this.isCheckingOut.set(false);
       console.error('Stripe checkout error:', error);
       this.notification.set({
         type: 'error',

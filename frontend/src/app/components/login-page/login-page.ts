@@ -31,6 +31,7 @@ export class LoginPage {
   }
 
   type: string = 'password';
+  isLoading: boolean = false;
   data: object = {};
   myLogForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -51,6 +52,7 @@ export class LoginPage {
     else this.type = 'password';
   }
   loginUser(password: HTMLInputElement, email: HTMLInputElement) {
+    this.isLoading = true;
     this.data = {
       email: email.value,
       password: password.value,
@@ -62,10 +64,12 @@ export class LoginPage {
         localStorage.setItem('username', res.name);
         localStorage.setItem('email', res.email);
         localStorage.setItem('role', res.role);
+        this.isLoading = false;
         this.router.navigate(['/']);
       },
       error: (err) => {
         alert(err.error?.message);
+        this.isLoading = false;
       },
     });
   }

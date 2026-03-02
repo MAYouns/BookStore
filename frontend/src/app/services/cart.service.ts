@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
 
 export interface Book {
@@ -42,16 +43,13 @@ export class CartService {
     });
   }
 
-  addToCart(bookId: string) {
+  addToCart(bookId: string): Observable<any> {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     };
-    this.http.post(`${environment.apiUrl}/api/v1/users/cart/${bookId}`, {}, { headers }).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.loadCart();
-      },
-      error: (err) => console.log(err),
-    });
+    return this.http.post(`${environment.apiUrl}/api/v1/users/cart/${bookId}`, {}, { headers }).pipe(
+      tap(() => this.loadCart())
+    );
   }
 }
+

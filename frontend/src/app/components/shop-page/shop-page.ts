@@ -9,12 +9,16 @@ import { Card } from './card/card';
 
 export type { Book };
 
+import { fadeAnimation, listStagger } from '../../animations';
+
 @Component({
   selector: 'app-shop-page',
   standalone: true,
   imports: [CommonModule, Filter, HttpClientModule, Card],
   providers: [BookService],
   templateUrl: './shop-page.html',
+  styleUrls: ['./shop-page.css'],
+  animations: [listStagger, fadeAnimation]
 })
 export class ShopPage implements OnInit {
   currentFilter: FilterCriteria = {
@@ -26,7 +30,13 @@ export class ShopPage implements OnInit {
 
   books: Book[] = [];
   filteredBooks: Book[] = [];
+  paginatedBooks: Book[] = [];
   favoritesCount: number = 0;
+  isLoading: boolean = true;
+
+  // Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
 
   constructor(
     private bookService: BookService,
@@ -48,14 +58,16 @@ export class ShopPage implements OnInit {
   }
 
   loadBooks(): void {
+    this.isLoading = true;
     this.bookService.getBooks().subscribe({
       next: (data) => {
-        console.log('Loaded books:', data);
         this.books = data;
         this.applyFilters();
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading books:', error);
+        this.isLoading = false;
       },
     });
   }
@@ -106,21 +118,71 @@ export class ShopPage implements OnInit {
     }
 
     this.filteredBooks = result;
-    console.log('Filtered books:', this.filteredBooks.length);
+    this.currentPage = 1;
+    this.updatePaginatedBooks();
   }
 
-  onAddToCart(book: Book): void {
-    this.cartService.addToCart(book._id);
-    console.log('Added to cart:', book._id);
+  // Pagination methods
+  get totalPages(): number {
+    return Math.ceil(this.filteredBooks.length / this.itemsPerPage);
   }
 
-  onToggleFavorite(book: Book): void {
-    // The favorite toggle is now handled in the card component
-    // This method just updates the local state
-    const bookToUpdate = this.books.find((b) => b._id === book._id);
-    if (bookToUpdate) {
-      bookToUpdate.isFavorite = book.isFavorite;
+  get pageNumbers(): number[] {
+    const total = this.totalPages;
+    if (total <= 3) {
+      return Array.from({ length: total }, (_, i) => i + 1);
     }
+    
+    let start = this.currentPage - 1;
+    let end = this.currentPage + 1;
+    
+    // Adjust bounds
+    if (start < 1) {
+      start = 1;
+      end = 3;
+    }
+    if (end > total) {
+      end = total;
+      start = total - 2;
+    }
+    
+    const pages = [];
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  updatePaginatedBooks(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedBooks = this.filteredBooks.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedBooks();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  onAddToCart(): void {
+    // Handled in card component directly now, but we can refresh cart or UI here if needed
+  }
+
+  onToggleFavorite(): void {
+    // The favorite toggle is now handled in the card component
+    // This method just updates the filters to reflect the new state
     this.applyFilters();
   }
 }
+

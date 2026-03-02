@@ -13,6 +13,7 @@ import { FavoritesService } from '../../services/favorite.service';
 })
 export class FavouriteBookPage implements OnInit {
   favoriteBooks: Book[] = [];
+  isLoading = true;
 
   constructor(
     private cartService: CartService,
@@ -22,19 +23,26 @@ export class FavouriteBookPage implements OnInit {
 
   ngOnInit(): void {
     this.favourite.loadFavorites().subscribe({
-      next: (res: any) => (this.favoriteBooks = res.favouriteBooks),
+      next: (res: any) => {
+        this.favoriteBooks = res.favouriteBooks;
+        this.isLoading = false;
+      },
+      error: () => this.isLoading = false
     });
   }
 
   loadFavorites(): void {
+    this.isLoading = true;
     this.favourite.loadFavorites().subscribe({
       next: (response: any) => {
         // Adjust based on your API response structure
         this.favoriteBooks = response.favouriteBook || response.data || response;
         console.log('Loaded favorites:', this.favoriteBooks);
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading favorites:', err);
+        this.isLoading = false;
       },
     });
   }

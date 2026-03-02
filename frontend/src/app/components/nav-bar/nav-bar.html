@@ -6,7 +6,7 @@
             <p class="text-2xl md:text-3xl">Papy<span class="text-amber-700">rus</span></p>
         </div>
 
-        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-1 md:mr-9">
+        <div class="flex items-center md:order-2 space-x-2 md:space-x-3 rtl:space-x-reverse ml-auto md:mr-9">
             @if(!isLogin){
             <div class="space-x-4">
                 <button><a routerLink="login" class="bg-[var(--secondary-color)] p-3 rounded text-sm">Login</a></button>
@@ -49,9 +49,9 @@
             </button>
         </div>
 
-        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+        <div class="items-center justify-center hidden w-full md:flex md:flex-1 md:order-1" id="navbar-user">
             <ul
-                class="flex flex-col font-medium p-4 md:p-0 mt-4  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                class="flex flex-col font-medium p-4 md:p-0 mt-4 mx-auto md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li><a routerLink="/" class={{linkStyle}} (click)="toggleMenu()">Home</a></li>
                 <li><a routerLink="/shop" class={{linkStyle}} (click)="toggleMenu()">Shop</a></li>
                 <li><a routerLink="/about" class={{linkStyle}} (click)="toggleMenu()">About</a></li>
