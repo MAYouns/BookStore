@@ -1,5 +1,5 @@
 {
-  "buildCommand": "ng build --configuration production",
+  "buildCommand": "ng build --configuration production --base-href=/",
   "outputDirectory": "dist/frontend/browser",
   "framework": null,
   "routes": [
