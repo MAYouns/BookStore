@@ -1,8 +1,0 @@
-{
-  "buildCommand": "ng build --configuration production --base-href=/",
-  "outputDirectory": "dist/frontend/browser",
-  "framework": null,
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
-}
